@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/analu-sistemaestofados/static/css/main.bb2140a1.css",
+    "main.js": "/analu-sistemaestofados/static/js/main.bdb0c0d7.js",
+    "static/js/453.a2260ead.chunk.js": "/analu-sistemaestofados/static/js/453.a2260ead.chunk.js",
+    "index.html": "/analu-sistemaestofados/index.html",
+    "main.bb2140a1.css.map": "/analu-sistemaestofados/static/css/main.bb2140a1.css.map",
+    "main.bdb0c0d7.js.map": "/analu-sistemaestofados/static/js/main.bdb0c0d7.js.map",
+    "453.a2260ead.chunk.js.map": "/analu-sistemaestofados/static/js/453.a2260ead.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bb2140a1.css",
+    "static/js/main.bdb0c0d7.js"
+  ]
+}
