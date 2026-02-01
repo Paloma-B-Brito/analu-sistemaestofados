@@ -76,7 +76,7 @@ const mockEstofadosFabrica = [
 ];
 
 function EstoqueFabrica() {
-  const [pedidos, setPedidos] = useState(mockEstofadosFabrica);
+  const [pedidos] = useState(mockEstofadosFabrica);
   const [itemDetalhado, setItemDetalhado] = useState(null);
 
   const getStatusStyle = (status) => {
