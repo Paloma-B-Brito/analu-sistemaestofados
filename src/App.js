@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // 1. IMPORTANDO COMPONENTES BASE
-import Login from "./pages/Login"; // Conforme seu print, o Login está em /pages
+import Login from "./pages/Login"; 
 import Header from "./components/Header";
 
 // 2. IMPORTANDO PÁGINAS DE GOVERNANÇA
@@ -14,25 +14,60 @@ import Financeiro from "./pages/Financeiro";
 
 function App() {
   const [logado, setLogado] = useState(false);
+  const [role, setRole] = useState(null); // Armazena ADMIN ou LOJA
   const [pagina, setPagina] = useState("Dashboard");
+
+  // Recupera o acesso se o usuário atualizar a página (F5)
+  useEffect(() => {
+    const savedRole = localStorage.getItem("userRole");
+    if (savedRole) {
+      setLogado(true);
+      setRole(savedRole);
+      // Se for funcionário da loja, a página inicial deve ser a Loja
+      if (savedRole === "LOJA") setPagina("Entregas"); 
+    }
+  }, []);
+
+  const handleLoginSuccess = (userRole) => {
+    setLogado(true);
+    setRole(userRole);
+    // Direcionamento automático baseado no cargo
+    if (userRole === "LOJA") {
+      setPagina("Entregas");
+    } else {
+      setPagina("Dashboard");
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setLogado(false);
+    setRole(null);
+  };
 
   // Se não estiver logado, exibe apenas o Login
   if (!logado) {
-    return <Login onLogin={() => setLogado(true)} />;
+    return <Login onLogin={handleLoginSuccess} />;
   }
 
-  // Motor de Renderização baseado no Header
+  // Motor de Renderização com bloqueio de segurança
   function renderizarPagina() {
+    // Se for LOJA, ele só pode ver a tela de Entregas/Loja
+    if (role === "LOJA") {
+      return <AreaLoja />;
+    }
+
+    // Se for ADMIN, ele tem acesso ao menu completo
     switch (pagina) {
       case "Dashboard":
         return <Dashboard />;
       case "Estoque":
         return <EstoqueFabrica />;
-      case "Suprimentos": // Novo nome reconhecido
+      case "Suprimentos":
         return <GestaoInsumos />;
       case "Entregas":
         return <AreaLoja />;
-      case "Financeiro": // Novo nome reconhecido
+      case "Financeiro":
         return <Financeiro />;
       case "Funcionários":
         return <Funcionarios />;
@@ -43,22 +78,21 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#fcfcf9] flex flex-col font-sans">
-      {/* Header Executivo Analu */}
+      {/* O Header só mostrará os botões que a ROLE permitir */}
       <Header
         paginaAtual={pagina}
         setPagina={setPagina}
-        onLogout={() => setLogado(false)}
+        userRole={role} // Passamos a role para o Header esconder botões
+        onLogout={handleLogout}
       />
 
-      {/* Conteúdo Principal de Alta Densidade */}
       <main className="flex-1 w-full max-w-full mx-auto p-4 md:p-8 animate-fade-in">
         {renderizarPagina()}
       </main>
 
-      {/* Rodapé de Auditoria */}
       <footer className="p-4 text-center border-t border-slate-100 bg-white">
         <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.3em]">
-          Analu Executive Suite © 2026 • Security Protocol Active
+          Analu Executive Suite © 2026 • Security Protocol Active • Role: {role}
         </p>
       </footer>
     </div>
