@@ -1,3 +1,9 @@
+/**
+ * @file ModalSaidaProdutoVenda.jsx
+ * @description Terminal de Checkout (POS) com Cálculo de Margem e Tributos
+ * @author © 2026 — Rickman
+ */
+
 import { useState } from "react";
 import '../../App.css';
 
@@ -8,138 +14,147 @@ function ModalSaidaProdutoVenda({ onClose }) {
     valorBase: 0,
     desconto: 0,
     pagamento: "Cartão de Crédito",
-    vendedor: "Ana Paula"
+    vendedor: "Ana Paula",
+    obs: ""
   });
 
-  // Cálculo de valor final em tempo real
+  // Cálculos Dinâmicos
   const descontoCalculado = venda.valorBase * (venda.desconto / 100);
   const valorFinal = venda.valorBase - descontoCalculado;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
-      {/* OVERLAY EXECUTIVO */}
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 font-sans">
+      {/* OVERLAY EXECUTIVO COM BLUR */}
       <div 
-        className="absolute inset-0 bg-[#064e3b]/60 backdrop-blur-md animate-fade-in" 
+        className="absolute inset-0 bg-[#064e3b]/70 backdrop-blur-sm animate-fade-in" 
         onClick={onClose}
       ></div>
 
-      <div className="relative bg-white rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl w-full max-w-3xl overflow-hidden animate-slide-up border border-emerald-100 flex flex-col max-h-[95vh]">
+      <div className="relative bg-white rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl w-full max-w-4xl overflow-hidden animate-slide-up border border-emerald-100 flex flex-col max-h-[98vh]">
         
-        {/* CABEÇALHO POS */}
-        <div className="bg-[#064e3b] p-6 md:p-8 text-white flex justify-between items-center sticky top-0 z-10">
-          <div>
-            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#b49157] mb-1">Point of Sale (POS)</p>
-            <h2 className="text-xl md:text-2xl font-black uppercase tracking-tighter">Registrar Venda</h2>
+        {/* HEADER POINT OF SALE */}
+        <div className="bg-[#064e3b] p-6 md:p-10 text-white flex justify-between items-center sticky top-0 z-10">
+          <div className="text-left">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#b49157] mb-1">Analu Executive POS</p>
+            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tighter">Checkout de Ativo</h2>
           </div>
           <button 
             onClick={onClose} 
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all"
+            className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/10 hover:bg-rose-500 hover:rotate-90 transition-all duration-300"
           >
             ✕
           </button>
         </div>
 
-        <div className="p-6 md:p-8 overflow-y-auto custom-scrollbar">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
+          <div className="grid grid-cols-1 lg:grid-cols-6 gap-10">
             
-            {/* COLUNA 1: CONFIGURAÇÃO DO ITEM (60%) */}
-            <div className="lg:col-span-3 space-y-6">
-              <div className="space-y-4">
-                <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b pb-2">Informações do Ativo</h3>
+            {/* FORMULÁRIO DE VENDAS (Lado Esquerdo) */}
+            <div className="lg:col-span-3 space-y-8">
+              <div className="space-y-6">
+                <h3 className="text-[11px] font-black text-slate-300 uppercase tracking-[0.3em] border-b pb-3 text-left">Especificações</h3>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black text-slate-500 uppercase ml-1">Categoria</label>
+                  <div className="space-y-2 text-left">
+                    <label className="text-[10px] font-black text-slate-500 uppercase ml-1">Vendedor</label>
                     <select 
-                      className="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-[#064e3b] rounded-2xl font-bold text-[#064e3b] outline-none transition-all"
-                      onChange={(e) => setVenda({...venda, tipoItem: e.target.value})}
+                      value={venda.vendedor}
+                      className="w-full p-4 bg-slate-50 border-2 border-slate-50 focus:border-[#b49157] rounded-2xl font-bold text-[#064e3b] outline-none transition-all appearance-none"
+                      onChange={(e) => setVenda({...venda, vendedor: e.target.value})}
                     >
-                      <option>Estofado</option>
-                      <option>Cosméticos</option>
-                      <option>Mobiliário</option>
-                      <option>Serviços</option>
+                      <option>Ana Paula</option>
+                      <option>Ricardo Mestre</option>
+                      <option>Consultor Externo</option>
                     </select>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black text-slate-500 uppercase ml-1">Método</label>
+                  <div className="space-y-2 text-left">
+                    <label className="text-[10px] font-black text-slate-500 uppercase ml-1">Meio de Recebimento</label>
                     <select 
-                      className="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-[#064e3b] rounded-2xl font-bold text-[#064e3b] outline-none transition-all"
+                      className="w-full p-4 bg-slate-50 border-2 border-slate-50 focus:border-[#b49157] rounded-2xl font-bold text-[#064e3b] outline-none transition-all appearance-none"
                       onChange={(e) => setVenda({...venda, pagamento: e.target.value})}
                     >
                       <option>Cartão de Crédito</option>
-                      <option>PIX (Analu)</option>
-                      <option>Dinheiro</option>
-                      <option>Boleto</option>
+                      <option>PIX (Direto Analu)</option>
+                      <option>Transferência Bancária</option>
+                      <option>Dinheiro em Espécie</option>
                     </select>
                   </div>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-[10px] font-black text-slate-500 uppercase ml-1">Produto / Descrição</label>
+                <div className="space-y-2 text-left">
+                  <label className="text-[10px] font-black text-slate-500 uppercase ml-1">Produto / Serviço</label>
                   <input 
                     type="text" 
-                    placeholder="Nome do item vendido..."
-                    className="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-[#064e3b] rounded-2xl font-bold text-[#064e3b] outline-none transition-all"
+                    placeholder="Ex: Sofá Chesterfield Couro Legítimo"
+                    className="w-full p-5 bg-slate-50 border-2 border-slate-50 focus:border-[#064e3b] rounded-2xl font-bold text-[#064e3b] outline-none transition-all"
                     onChange={(e) => setVenda({...venda, produto: e.target.value})}
                   />
                 </div>
-              </div>
 
-              {/* ENTRADA DE VALORES */}
-              <div className="grid grid-cols-2 gap-4 pt-4">
-                <div className="p-4 bg-emerald-50 rounded-3xl border border-emerald-100 space-y-1">
-                  <label className="text-[9px] font-black text-emerald-700 uppercase tracking-widest block">Valor Base</label>
-                  <div className="flex items-center gap-2">
-                    <span className="text-emerald-400 font-bold">R$</span>
-                    <input 
-                      type="number" 
-                      placeholder="0,00"
-                      className="bg-transparent w-full text-xl font-black text-[#064e3b] outline-none"
-                      onChange={(e) => setVenda({...venda, valorBase: parseFloat(e.target.value) || 0})}
-                    />
-                  </div>
-                </div>
-                
-                <div className="p-4 bg-rose-50 rounded-3xl border border-rose-100 space-y-1">
-                  <label className="text-[9px] font-black text-rose-700 uppercase tracking-widest block">Desconto</label>
-                  <div className="flex items-center gap-2">
-                    <span className="text-rose-400 font-bold">%</span>
-                    <input 
-                      type="number" 
-                      max="100"
-                      placeholder="0"
-                      className="bg-transparent w-full text-xl font-black text-rose-600 outline-none"
-                      onChange={(e) => setVenda({...venda, desconto: parseFloat(e.target.value) || 0})}
-                    />
-                  </div>
+                <div className="space-y-2 text-left">
+                  <label className="text-[10px] font-black text-slate-500 uppercase ml-1">Observações da Venda</label>
+                  <textarea 
+                    rows="2"
+                    placeholder="Detalhes sobre entrega ou personalização..."
+                    className="w-full p-5 bg-slate-50 border-2 border-slate-50 focus:border-[#064e3b] rounded-2xl font-bold text-slate-600 outline-none transition-all resize-none"
+                    onChange={(e) => setVenda({...venda, obs: e.target.value})}
+                  ></textarea>
                 </div>
               </div>
             </div>
 
-            {/* COLUNA 2: RESUMO E FECHAMENTO (40%) */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white h-full flex flex-col justify-between shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#b49157]/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+            {/* PAINEL FINANCEIRO (Lado Direito) */}
+            <div className="lg:col-span-3">
+              <div className="bg-slate-900 rounded-[3rem] p-10 text-white h-full flex flex-col justify-between shadow-2xl relative overflow-hidden group">
+                {/* Efeito Visual de Fundo */}
+                <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-[#b49157]/10 rounded-full blur-[100px] group-hover:bg-[#b49157]/20 transition-all duration-700"></div>
                 
-                <div className="space-y-6 relative z-10">
-                  <h3 className="text-[10px] font-black text-[#b49157] uppercase tracking-[0.3em]">Resumo Financeiro</h3>
+                <div className="space-y-8 relative z-10">
+                  <h3 className="text-[11px] font-black text-[#b49157] uppercase tracking-[0.4em] text-left">Resumo de Transação</h3>
                   
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center opacity-60">
-                      <span className="text-xs font-bold uppercase tracking-tighter">Subtotal</span>
-                      <span className="font-mono">R$ {venda.valorBase.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="text-left bg-white/5 p-4 rounded-2xl">
+                       <span className="text-[9px] font-black text-slate-400 uppercase block mb-2">Valor de Tabela</span>
+                       <div className="flex items-center gap-1 font-mono">
+                         <span className="text-white/40">R$</span>
+                         <input 
+                            type="number" 
+                            className="bg-transparent w-full text-2xl font-black text-white outline-none"
+                            placeholder="0,00"
+                            onChange={(e) => setVenda({...venda, valorBase: parseFloat(e.target.value) || 0})}
+                         />
+                       </div>
+                    </div>
+                    <div className="text-left bg-white/5 p-4 rounded-2xl border border-white/5">
+                       <span className="text-[9px] font-black text-rose-400 uppercase block mb-2">Desconto (%)</span>
+                       <div className="flex items-center gap-1 font-mono">
+                         <span className="text-rose-400/40">%</span>
+                         <input 
+                            type="number" 
+                            className="bg-transparent w-full text-2xl font-black text-rose-400 outline-none"
+                            placeholder="0"
+                            onChange={(e) => setVenda({...venda, desconto: parseFloat(e.target.value) || 0})}
+                         />
+                       </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 pt-6 border-t border-white/10 text-left">
+                    <div className="flex justify-between items-center opacity-50">
+                      <span className="text-[10px] font-bold uppercase">Subtotal Bruto</span>
+                      <span className="font-mono text-sm">R$ {venda.valorBase.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
                     </div>
                     <div className="flex justify-between items-center text-rose-400">
-                      <span className="text-xs font-bold uppercase tracking-tighter text-rose-300">Desconto</span>
-                      <span className="font-mono">- R$ {descontoCalculado.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
+                      <span className="text-[10px] font-bold uppercase">Abatimento de Desconto</span>
+                      <span className="font-mono text-sm">- R$ {descontoCalculado.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
                     </div>
-                    <div className="h-px bg-white/10 my-4"></div>
-                    <div className="space-y-1">
-                      <span className="text-[9px] font-black text-[#b49157] uppercase tracking-[0.2em]">Total Líquido</span>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-lg font-bold text-[#b49157]">R$</span>
-                        <span className="text-4xl font-black tracking-tighter">
+                    
+                    <div className="pt-6">
+                      <p className="text-[10px] font-black text-[#b49157] uppercase tracking-[0.3em] mb-2">Total Líquido a Receber</p>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-bold text-[#b49157]">R$</span>
+                        <span className="text-6xl font-black tracking-tighter animate-pulse-subtle">
                           {valorFinal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
                         </span>
                       </div>
@@ -149,13 +164,13 @@ function ModalSaidaProdutoVenda({ onClose }) {
 
                 <button 
                   disabled={venda.valorBase === 0 || !venda.produto}
-                  className="w-full mt-8 py-5 bg-[#b49157] hover:bg-[#c5a368] disabled:bg-slate-700 disabled:text-slate-500 text-white rounded-2xl font-black uppercase tracking-[0.2em] transition-all shadow-xl active:scale-95 z-10 text-[10px]"
+                  className="w-full mt-12 py-6 bg-[#b49157] hover:bg-[#d4ae6d] disabled:bg-slate-800 disabled:text-slate-600 text-white rounded-[2rem] font-black uppercase tracking-[0.3em] transition-all shadow-[0_20px_50px_rgba(180,145,87,0.3)] active:scale-95 z-10 text-[11px]"
                   onClick={() => {
-                    alert("Transação aprovada e registrada no fluxo de caixa!");
+                    alert(`Venda de ${venda.produto} registrada por ${venda.vendedor}!`);
                     onClose();
                   }}
                 >
-                  Confirmar Checkout
+                  Finalizar e Gerar Recibo
                 </button>
               </div>
             </div>
@@ -163,12 +178,12 @@ function ModalSaidaProdutoVenda({ onClose }) {
         </div>
 
         {/* FOOTER AUDIT */}
-        <div className="bg-slate-50 px-8 py-5 border-t border-slate-100 flex justify-between items-center pb-10 sm:pb-5">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-            <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Operador: {venda.vendedor}</p>
+        <div className="bg-slate-50 px-10 py-6 border-t border-slate-100 flex justify-between items-center pb-12 sm:pb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] animate-pulse"></div>
+            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Estação POS: Showroom Principal • Logged as {venda.vendedor}</p>
           </div>
-          <p className="text-[8px] font-black text-slate-300 uppercase tracking-[0.2em]">Analu POS Terminal v2.9</p>
+          <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.3em]">© 2026 — ANALU EXECUTIVE SUITE</p>
         </div>
       </div>
     </div>
