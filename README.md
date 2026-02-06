@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+🌿 Analu Executive Intelligence Suite v3.0
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+O Analu Suite é uma plataforma ERP/CRM de alto padrão desenvolvida exclusivamente para a gestão integrada da Analu Estofados & Cosméticos. O sistema une o controle de supply chain, gestão de vendas premium e monitoramento de fábrica em uma interface executiva minimalista.
 
-## Available Scripts
+Status do Sistema: Operacional / Em Desenvolvimento Ativo
+Arquitetura: Micro-frontend React + Integração com Spring Boot API.
 
-In the project directory, you can run:
+🛠 Tech Stack & Protocolos
 
-### `npm start`
+- Core: React.js (Hooks & Context API)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Design: Tailwind CSS (Arquitetura Utilitária Customizada)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- UI/UX: Design System Premium (Analu Gold & Emerald Theme)
 
-### `npm test`
+- Icons: Heroicons & Custom SVG Assets
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Fonts: Inter & Montserrat (Executivas)
 
-### `npm run build`
+🚀 Comandos de Operação 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Para iniciar o núcleo do sistema em ambiente de desenvolvimento:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+npm start
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Inicia o servidor local.
+Acesse via: http://localhost:3000
 
-### `npm run eject`
+npm run build
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Gera a versão de produção otimizada.
+O build é injetado com minificação profunda e hashes de segurança para deploy no servidor Analu.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+📐 Estrutura de Componentes Premium
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+O sistema utiliza uma biblioteca interna de componentes customizados:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Componente,Função
+Login.jsx ------   Gateway de autenticação segura com verificação de papéis (Admin/User).
+ModalConsultaGeral.jsx ------- "Motor de busca global (SKUs, Insumos e Produtos)."
+ModalAdicionarMaterial.jsx ------- Interface de registro para Supply Chain e Inventário.
+MenuBotao.jsx ------- Átomo de navegação com micro-interações de luxo.
 
-## Learn More
+🔐 Configurações de Segurança
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Este repositório contém lógica de autenticação via JWT (JSON Web Tokens). As variáveis de ambiente para conexão com o backend devem ser configuradas no arquivo .env (não incluído no versionamento):
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+REACT_APP_API_URL=http://localhost:8080/api
+REACT_APP_SYSTEM_VERSION=3.0.0
 
-### Code Splitting
+🏛 Identidade Visual (Design Tokens)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Analu Emerald: #064e3b (Primária - Autoridade)
 
-### Analyzing the Bundle Size
+- Analu Gold: #b49157 (Destaque - Prestígio)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Pure White: #ffffff (Base - Limpeza visual)
 
-### Making a Progressive Web App
+- Slate Soft: #f1f5f9 (Contraste de Interface)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+✒️ Créditos & Propriedade
 
-### Advanced Configuration
+Este software é de uso restrito da Analu Estofados. Desenvolvido sob os protocolos de engenharia de:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+© 2026 — Rickman Executive Software Architect
