@@ -1,10 +1,10 @@
 /**
  * @file Financeiro.jsx
- * @description Gestão de Precificação e Engenharia de Custos
+ * @description Gestão de Precificação e Engenharia de Custos - Fixed Version
  * @author © 2026 — Rickman
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../App.css";
 
 const catalogoInicial = [
@@ -21,13 +21,19 @@ function FinanceiroEditavel() {
   const [pagina, setPagina] = useState(1);
   const itensPorPagina = 4;
 
-  // Lógica de Paginação do Seletor
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+    };
+  }, []);
+
   const totalPaginas = Math.ceil(produtos.length / itensPorPagina);
   const produtosExibidos = produtos.slice((pagina - 1) * itensPorPagina, pagina * itensPorPagina);
-
   const produtoAtivo = produtos.find(p => p.id === idAtivo);
 
-  // Atualização de estados numéricos
   const handleUpdateGeral = (campo, valor) => {
     const num = valor === "" ? 0 : parseFloat(valor);
     setProdutos(produtos.map(p => p.id === idAtivo ? { ...p, [campo]: num } : p));
@@ -47,106 +53,115 @@ function FinanceiroEditavel() {
 
   const totalMateriais = produtoAtivo.materiais.reduce((acc, m) => acc + (m.qtd * m.vlr), 0);
   const custoFinal = totalMateriais + produtoAtivo.maoDeObra + produtoAtivo.custoFixoRateio;
-  const precoSugerido = custoFinal * 2.5; // Markup padrão de 2.5x
+  const precoSugerido = custoFinal * 2.5;
 
   return (
-    <div className="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden font-sans w-full min-h-[700px]">
+    <div className="fixed inset-0 bg-[#f8f9f5] flex flex-col overflow-hidden px-4 md:px-8 py-6 animate-fade-in font-sans">
       
-      {/* Header Financeiro com Resumo de Custo */}
-      <div className="bg-[#064e3b] p-6 md:p-8 text-white">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="text-left">
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#b49157] mb-2">Engenharia de Custos</p>
-            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tighter leading-tight">Ajuste de Precificação</h2>
-          </div>
-          <div className="flex gap-4 w-full md:w-auto">
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/10 flex-1 text-center">
-              <p className="text-[8px] font-bold uppercase opacity-50">Custo de Fab.</p>
-              <p className="text-xl font-black text-white">R$ {custoFinal.toLocaleString('pt-BR')}</p>
-            </div>
-            <div className="bg-[#b49157]/20 p-4 rounded-2xl border border-[#b49157]/30 flex-1 text-center">
-              <p className="text-[8px] font-bold uppercase text-[#b49157]">Venda Sugerida</p>
-              <p className="text-xl font-black text-[#b49157]">R$ {precoSugerido.toLocaleString('pt-BR')}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-4 md:p-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+      {/* Container Principal Estilo Card Fixo */}
+      <div className="flex-1 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col">
         
-        {/* Seletor Lateral com Paginação */}
-        <div className="lg:col-span-1">
-          <div className="flex justify-between items-center mb-4">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Modelos</label>
-            <div className="flex gap-2">
-              <button disabled={pagina === 1} onClick={() => setPagina(p => p - 1)} className="text-[10px] font-black disabled:opacity-20">〈</button>
-              <button disabled={pagina === totalPaginas} onClick={() => setPagina(p => p + 1)} className="text-[10px] font-black disabled:opacity-20">〉</button>
+        {/* Header Financeiro (Fixo no topo do card) */}
+        <div className="bg-[#064e3b] p-6 text-white shrink-0">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-left w-full md:w-auto">
+              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#b49157] mb-1">Engenharia de Custos</p>
+              <h2 className="text-2xl font-black uppercase tracking-tighter leading-tight">Ajuste de Precificação</h2>
             </div>
-          </div>
-          <div className="flex lg:flex-col gap-2 overflow-x-auto pb-4 lg:pb-0">
-            {produtosExibidos.map(p => (
-              <button 
-                key={p.id}
-                onClick={() => setIdAtivo(p.id)}
-                className={`min-w-[180px] lg:min-w-full text-left p-4 rounded-xl border-2 transition-all ${idAtivo === p.id ? 'border-[#064e3b] bg-emerald-50' : 'border-slate-50 hover:bg-slate-50'}`}
-              >
-                <p className="text-[9px] font-black text-[#b49157]">{p.id}</p>
-                <p className="text-xs font-black text-[#064e3b] uppercase truncate">{p.nome}</p>
-              </button>
-            ))}
+            <div className="flex gap-4 w-full md:w-auto">
+              <div className="bg-white/5 p-3 rounded-xl border border-white/10 flex-1 text-center min-w-[120px]">
+                <p className="text-[8px] font-bold uppercase opacity-50">Custo de Fab.</p>
+                <p className="text-lg font-black text-white">R$ {custoFinal.toLocaleString('pt-BR')}</p>
+              </div>
+              <div className="bg-[#b49157]/20 p-3 rounded-xl border border-[#b49157]/30 flex-1 text-center min-w-[120px]">
+                <p className="text-[8px] font-bold uppercase text-[#b49157]">Venda Sugerida</p>
+                <p className="text-lg font-black text-[#b49157]">R$ {precoSugerido.toLocaleString('pt-BR')}</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Editor de Custos */}
-        <div className="lg:col-span-3 space-y-6">
-          <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-            <h3 className="text-[10px] font-black text-[#064e3b] uppercase mb-6 border-b pb-2 text-left tracking-widest">I. Composição de Materiais</h3>
-            <div className="space-y-3">
-              {produtoAtivo.materiais.map((m, index) => (
-                <div key={index} className="grid grid-cols-2 md:grid-cols-4 gap-4 items-center bg-white p-4 rounded-xl border border-slate-200">
-                  <span className="text-[11px] font-black text-slate-700 text-left uppercase">{m.item}</span>
-                  <div className="flex flex-col text-left">
-                    <label className="text-[8px] font-black text-slate-400 uppercase">Qtd</label>
-                    <input type="number" value={m.qtd || ""} onChange={(e) => handleUpdateMaterial(index, 'qtd', e.target.value)} className="text-sm font-black text-[#064e3b] outline-none bg-transparent border-b border-slate-100 focus:border-[#b49157]" />
-                  </div>
-                  <div className="flex flex-col text-left">
-                    <label className="text-[8px] font-black text-slate-400 uppercase">Preço Un.</label>
-                    <input type="number" value={m.vlr || ""} onChange={(e) => handleUpdateMaterial(index, 'vlr', e.target.value)} className="text-sm font-black text-[#064e3b] outline-none bg-transparent border-b border-slate-100 focus:border-[#b49157]" />
-                  </div>
-                  <div className="text-right hidden md:block">
-                    <p className="text-[8px] font-black text-slate-400 uppercase">Subtotal</p>
-                    <p className="text-xs font-black text-[#064e3b]">R$ {(m.qtd * m.vlr).toLocaleString('pt-BR')}</p>
-                  </div>
-                </div>
+        <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-4">
+          
+          {/* Seletor Lateral */}
+          <div className="lg:col-span-1 border-r border-slate-100 p-6 flex flex-col overflow-hidden">
+            <div className="flex justify-between items-center mb-4 shrink-0">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Modelos</label>
+              <div className="flex gap-2">
+                <button disabled={pagina === 1} onClick={() => setPagina(p => p - 1)} className="text-[10px] font-black disabled:opacity-20 hover:text-[#064e3b]">〈</button>
+                <button disabled={pagina === totalPaginas} onClick={() => setPagina(p => p + 1)} className="text-[10px] font-black disabled:opacity-20 hover:text-[#064e3b]">〉</button>
+              </div>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
+              {produtosExibidos.map(p => (
+                <button 
+                  key={p.id}
+                  onClick={() => setIdAtivo(p.id)}
+                  className={`w-full text-left p-4 rounded-xl border-2 transition-all ${idAtivo === p.id ? 'border-[#064e3b] bg-emerald-50' : 'border-slate-50 hover:bg-slate-50'}`}
+                >
+                  <p className="text-[8px] font-black text-[#b49157]">{p.id}</p>
+                  <p className="text-[10px] font-black text-[#064e3b] uppercase truncate">{p.nome}</p>
+                </button>
               ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-              <h3 className="text-[10px] font-black text-[#064e3b] uppercase mb-4 tracking-widest">II. Mão de Obra Direta</h3>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-[#b49157] text-sm">R$</span>
-                <input type="number" value={produtoAtivo.maoDeObra || ""} onChange={(e) => handleUpdateGeral('maoDeObra', e.target.value)} className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-slate-200 focus:border-[#064e3b] font-black text-[#064e3b] outline-none" />
+          {/* Editor Central */}
+          <div className="lg:col-span-3 p-6 overflow-y-auto custom-scrollbar bg-slate-50/30">
+            <div className="max-w-4xl mx-auto space-y-6">
+              
+              {/* Materiais */}
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 className="text-[10px] font-black text-[#064e3b] uppercase mb-4 border-b pb-2 text-left tracking-widest">I. Composição de Materiais</h3>
+                <div className="space-y-2">
+                  {produtoAtivo.materiais.map((m, index) => (
+                    <div key={index} className="grid grid-cols-2 md:grid-cols-4 gap-4 items-center bg-slate-50/50 p-3 rounded-xl border border-slate-100">
+                      <span className="text-[10px] font-black text-slate-700 text-left uppercase truncate">{m.item}</span>
+                      <div className="flex flex-col text-left">
+                        <label className="text-[7px] font-black text-slate-400 uppercase text-left">Qtd</label>
+                        <input type="number" value={m.qtd || ""} onChange={(e) => handleUpdateMaterial(index, 'qtd', e.target.value)} className="text-xs font-black text-[#064e3b] outline-none bg-transparent border-b border-slate-200 focus:border-[#b49157]" />
+                      </div>
+                      <div className="flex flex-col text-left">
+                        <label className="text-[7px] font-black text-slate-400 uppercase text-left">Preço Un.</label>
+                        <input type="number" value={m.vlr || ""} onChange={(e) => handleUpdateMaterial(index, 'vlr', e.target.value)} className="text-xs font-black text-[#064e3b] outline-none bg-transparent border-b border-slate-200 focus:border-[#b49157]" />
+                      </div>
+                      <div className="text-right hidden md:block">
+                        <p className="text-[7px] font-black text-slate-400 uppercase">Subtotal</p>
+                        <p className="text-[10px] font-black text-[#064e3b]">R$ {(m.qtd * m.vlr).toLocaleString('pt-BR')}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-              <h3 className="text-[10px] font-black text-[#064e3b] uppercase mb-4 tracking-widest">III. Custos Fixos (Rateio)</h3>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-[#b49157] text-sm">R$</span>
-                <input type="number" value={produtoAtivo.custoFixoRateio || ""} onChange={(e) => handleUpdateGeral('custoFixoRateio', e.target.value)} className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-slate-200 focus:border-[#064e3b] font-black text-[#064e3b] outline-none" />
+
+              {/* Mão de Obra e Custos Fixos */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                  <h3 className="text-[10px] font-black text-[#064e3b] uppercase mb-3 tracking-widest">II. Mão de Obra</h3>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 font-black text-[#b49157] text-xs">R$</span>
+                    <input type="number" value={produtoAtivo.maoDeObra || ""} onChange={(e) => handleUpdateGeral('maoDeObra', e.target.value)} className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[#064e3b] font-black text-[#064e3b] outline-none text-sm" />
+                  </div>
+                </div>
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                  <h3 className="text-[10px] font-black text-[#064e3b] uppercase mb-3 tracking-widest">III. Custos Fixos</h3>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 font-black text-[#b49157] text-xs">R$</span>
+                    <input type="number" value={produtoAtivo.custoFixoRateio || ""} onChange={(e) => handleUpdateGeral('custoFixoRateio', e.target.value)} className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[#064e3b] font-black text-[#064e3b] outline-none text-sm" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Footer de Ação */}
-      <div className="bg-slate-50 p-6 border-t flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Cálculos baseados em Markup Industrial de 2.5x</p>
-        <button className="w-full md:w-auto bg-[#064e3b] text-white px-10 py-4 rounded-xl font-black uppercase text-[10px] tracking-widest shadow-xl hover:bg-[#053d2e] transition-all">
-          Gravar Nova Planilha de Custos
-        </button>
+        {/* Footer Ações */}
+        <div className="bg-white p-4 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 shrink-0">
+          <p className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em]">Markup Industrial: 2.5x — Rickman System</p>
+          <button className="w-full md:w-auto bg-[#064e3b] text-white px-8 py-3 rounded-xl font-black uppercase text-[9px] tracking-widest shadow-lg hover:brightness-110 transition-all">
+            Gravar Nova Planilha
+          </button>
+        </div>
       </div>
     </div>
   );
