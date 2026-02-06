@@ -1,3 +1,9 @@
+/**
+ * @file Header.jsx
+ * @description Navegação Principal e Identidade Visual
+ * @author © 2026 — Rickman
+ */
+
 import React, { useState } from 'react';
 
 function Header({ paginaAtual, setPagina, onLogout, userRole }) {
@@ -9,7 +15,6 @@ function Header({ paginaAtual, setPagina, onLogout, userRole }) {
     paperWhite: "#f8fafc"
   };
 
-  // Componente de Botão de Navegação
   function Botao({ label, nomePagina, mobile = false }) {
     const ativo = paginaAtual === nomePagina;
 
@@ -43,7 +48,7 @@ function Header({ paginaAtual, setPagina, onLogout, userRole }) {
     <header className="bg-[#064e3b] text-white shadow-2xl sticky top-0 z-50 border-b border-white/5 w-full">
       <div className="max-w-full mx-auto flex justify-between items-center px-4 md:px-8 h-16 md:h-20">
 
-        {/* LOGO E BOTÃO MENU MOBILE */}
+        {/* LOGO E MENU MOBILE */}
         <div className="flex items-center gap-3">
           <button 
             onClick={() => setMenuAberto(!menuAberto)}
@@ -65,52 +70,50 @@ function Header({ paginaAtual, setPagina, onLogout, userRole }) {
           </div>
         </div>
 
-        {/* NAVEGAÇÃO DESKTOP (Escondida no Mobile) */}
+        {/* NAVEGAÇÃO DESKTOP - TRADUZIDA */}
         <nav className="hidden lg:flex flex-1 justify-center items-center gap-1 px-4">
           {userRole === "ADMIN" && (
             <>
               <Botao label="Dashboard" nomePagina="Dashboard" />
-              <Botao label="Fábrica" nomePagina="Estoque" />
-              <Botao label="Insumos" nomePagina="Suprimentos" />
+              <Botao label="Produção" nomePagina="Estoque" />
+              <Botao label="Suprimentos" nomePagina="Suprimentos" />
             </>
           )}
-          <Botao label="Showroom" nomePagina="Entregas" />
+          <Botao label="Loja" nomePagina="Entregas" />
           {userRole === "ADMIN" && (
             <>
               <Botao label="Financeiro" nomePagina="Financeiro" />
-              <Botao label="RH" nomePagina="Funcionários" />
+              <Botao label="Funcionários" nomePagina="Funcionários" />
             </>
           )}
         </nav>
 
-        {/* USUÁRIO E SAIR */}
+        {/* PERFIL E SAIR - TRADUZIDO */}
         <div className="flex items-center gap-3 md:gap-6 ml-4">
           <div className="hidden xl:flex flex-col text-right border-r border-white/10 pr-6 leading-tight">
             <p className="text-[8px] font-black uppercase text-[#b49157]">
-              {userRole === "ADMIN" ? "Administrator" : "Operador"}
+              {userRole === "ADMIN" ? "Administrador" : "Operador de Loja"}
             </p>
-            <p className="text-[9px] font-bold text-white/40 uppercase">Root Access</p>
+            <p className="text-[9px] font-bold text-white/40 uppercase tracking-tighter">Acesso Identificado</p>
           </div>
 
           <button
             onClick={onLogout}
-            className="flex items-center justify-center w-10 h-10 md:w-auto md:px-5 md:py-2 border border-white/10 hover:border-[#b49157] rounded-xl transition-all"
+            className="flex items-center justify-center w-10 h-10 md:w-auto md:px-5 md:py-2 border border-white/10 hover:border-[#b49157] rounded-xl transition-all group"
           >
-            <span className="hidden md:inline text-[10px] font-black uppercase tracking-widest">Sair</span>
+            <span className="hidden md:inline text-[10px] font-black uppercase tracking-widest group-hover:text-[#b49157]">Sair</span>
             <span className="md:hidden text-lg">✕</span>
           </button>
         </div>
       </div>
 
-      {/* OVERLAY E MENU MOBILE LATERAL */}
+      {/* MENU MOBILE LATERAL */}
       <div className={`fixed inset-0 z-[60] lg:hidden transition-all duration-500 ${menuAberto ? "visible" : "invisible"}`}>
-        {/* Fundo escuro */}
         <div 
           className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${menuAberto ? "opacity-100" : "opacity-0"}`}
           onClick={() => setMenuAberto(false)}
         />
         
-        {/* Painel do Menu */}
         <div className={`absolute top-0 left-0 w-72 h-full bg-[#064e3b] shadow-2xl transition-transform duration-500 flex flex-col p-6 ${menuAberto ? "translate-x-0" : "-translate-x-full"}`}>
           <div className="flex justify-between items-center mb-10">
             <h2 className="font-black text-[#b49157] tracking-widest uppercase text-xs">Menu de Gestão</h2>
@@ -121,22 +124,22 @@ function Header({ paginaAtual, setPagina, onLogout, userRole }) {
             {userRole === "ADMIN" && (
               <>
                 <Botao label="Dashboard" nomePagina="Dashboard" mobile />
-                <Botao label="Fábrica" nomePagina="Estoque" mobile />
-                <Botao label="Insumos" nomePagina="Suprimentos" mobile />
+                <Botao label="Produção" nomePagina="Estoque" mobile />
+                <Botao label="Suprimentos" nomePagina="Suprimentos" mobile />
               </>
             )}
-            <Botao label="Showroom" nomePagina="Entregas" mobile />
+            <Botao label="Loja" nomePagina="Entregas" mobile />
             {userRole === "ADMIN" && (
               <>
                 <Botao label="Financeiro" nomePagina="Financeiro" mobile />
-                <Botao label="RH" nomePagina="Funcionários" mobile />
+                <Botao label="Funcionários" nomePagina="Funcionários" mobile />
               </>
             )}
           </div>
 
           <div className="mt-auto border-t border-white/10 pt-6">
-            <p className="text-[10px] font-black text-[#b49157] uppercase tracking-widest mb-1">Logado como:</p>
-            <p className="text-sm font-bold text-white uppercase">{userRole}</p>
+            <p className="text-[10px] font-black text-[#b49157] uppercase tracking-widest mb-1">Usuário:</p>
+            <p className="text-sm font-bold text-white uppercase">{userRole === "ADMIN" ? "Administrador" : "Vendedor"}</p>
           </div>
         </div>
       </div>

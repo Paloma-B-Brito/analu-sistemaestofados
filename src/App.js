@@ -1,3 +1,9 @@
+/**
+ * @file App.js
+ * @description Core da Aplicação - Gestão de Rotas e Permissões
+ * @author © 2026 — Rickman
+ */
+
 import { useState, useEffect } from "react";
 
 // 1. IMPORTANDO COMPONENTES BASE
@@ -23,7 +29,7 @@ function App() {
     if (savedRole) {
       setLogado(true);
       setRole(savedRole);
-      // Se for funcionário da loja, a página inicial deve ser a Loja
+      // Direcionamento inicial baseado na Role
       if (savedRole === "LOJA") setPagina("Entregas"); 
     }
   }, []);
@@ -82,7 +88,7 @@ function App() {
       <Header
         paginaAtual={pagina}
         setPagina={setPagina}
-        userRole={role} // Passamos a role para o Header esconder botões
+        userRole={role} 
         onLogout={handleLogout}
       />
 
@@ -90,9 +96,10 @@ function App() {
         {renderizarPagina()}
       </main>
 
+      {/* RODAPÉ PADRONIZADO - LIMPO E PROFISSIONAL */}
       <footer className="p-4 text-center border-t border-slate-100 bg-white">
-        <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.3em]">
-          Analu Executive Suite © 2026 • Security Protocol Active • Role: {role}
+        <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">
+          Analu Executive Suite • Acesso: <span className="text-slate-600">{role}</span> • © 2026 — Rickman
         </p>
       </footer>
     </div>

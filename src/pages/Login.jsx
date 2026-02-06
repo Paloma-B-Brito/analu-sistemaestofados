@@ -1,3 +1,9 @@
+/**
+ * @file Login.jsx
+ * @description Tela de Autenticação - Analu Estofados
+ * @author © 2026 — Rickman
+ */
+
 import { useState } from "react";
 
 function Login({ onLogin }) {
@@ -135,7 +141,7 @@ function Login({ onLogin }) {
 
         <div className="mt-8 sm:mt-12 pt-6 border-t border-slate-100 text-center">
           <p className="text-[8px] font-black text-slate-300 uppercase tracking-[0.2em]">
-            &copy; 2026 Analu Intelligence • Protocol Active
+            &copy; © 2026 — Rickman
           </p>
         </div>
       </div>

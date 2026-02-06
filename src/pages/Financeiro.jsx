@@ -25,18 +25,6 @@ const catalogoInicial = [
     ],
     maoDeObra: 450,
     custoFixoRateio: 100
-  },
-  {
-    id: "MOD-RET-03",
-    nome: "Sofá Retrátil Madri",
-    materiais: [
-      { item: "Tecido Suede", qtd: 18, vlr: 35 },
-      { item: "Mecanismo Retrátil", qtd: 2, vlr: 280 },
-      { item: "Estrutura Pinus", qtd: 1.2, vlr: 620 },
-      { item: "Mola Bonnel", qtd: 24, vlr: 15 }
-    ],
-    maoDeObra: 550,
-    custoFixoRateio: 150
   }
 ];
 
@@ -46,18 +34,25 @@ function FinanceiroEditavel() {
 
   const produtoAtivo = produtos.find(p => p.id === idAtivo);
 
+  // Função genérica para Mão de Obra e Custos Fixos
   const handleUpdateGeral = (campo, valor) => {
+    // Se o campo for limpo, tratamos como 0 para o cálculo, mas mantemos vazio no input
+    const valorNumerico = valor === "" ? 0 : parseFloat(valor);
+    
     const novosProdutos = produtos.map(p => 
-      p.id === idAtivo ? { ...p, [campo]: parseFloat(valor) || 0 } : p
+      p.id === idAtivo ? { ...p, [campo]: valorNumerico } : p
     );
     setProdutos(novosProdutos);
   };
 
+  // Função para Materiais (Qtd e Valor)
   const handleUpdateMaterial = (index, campo, valor) => {
+    const valorNumerico = valor === "" ? 0 : parseFloat(valor);
+    
     const novosProdutos = produtos.map(p => {
       if (p.id === idAtivo) {
         const novosMateriais = [...p.materiais];
-        novosMateriais[index][campo] = parseFloat(valor) || 0;
+        novosMateriais[index][campo] = valorNumerico;
         return { ...p, materiais: novosMateriais };
       }
       return p;
@@ -71,7 +66,7 @@ function FinanceiroEditavel() {
   return (
     <div className="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden animate-fade-in font-sans w-full">
       
-      {/* HEADER FINANCEIRO RESPONSIVO */}
+      {/* HEADER FINANCEIRO */}
       <div className="bg-[#064e3b] p-6 md:p-8 text-white">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="text-left">
@@ -87,10 +82,10 @@ function FinanceiroEditavel() {
 
       <div className="p-4 md:p-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
         
-        {/* SELETOR DE PRODUTOS - Scroll horizontal no mobile */}
+        {/* SELETOR DE PRODUTOS */}
         <div className="lg:col-span-1">
           <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-4 text-left">Selecione o Item</label>
-          <div className="flex lg:flex-col gap-2 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide">
+          <div className="flex lg:flex-col gap-2 overflow-x-auto pb-4 lg:pb-0">
             {produtos.map(p => (
               <button 
                 key={p.id}
@@ -119,8 +114,9 @@ function FinanceiroEditavel() {
                     <label className="text-[8px] font-black uppercase text-slate-400">Qtd.</label>
                     <input 
                       type="number" 
-                      value={m.qtd} 
+                      value={m.qtd === 0 ? "" : m.qtd} // Lógica para não mostrar o 0
                       onChange={(e) => handleUpdateMaterial(index, 'qtd', e.target.value)}
+                      placeholder="0"
                       className="text-sm font-black text-[#064e3b] border-b border-slate-100 focus:border-[#064e3b] outline-none py-1 bg-transparent"
                     />
                   </div>
@@ -129,15 +125,16 @@ function FinanceiroEditavel() {
                     <label className="text-[8px] font-black uppercase text-slate-400">Vlr (R$)</label>
                     <input 
                       type="number" 
-                      value={m.vlr} 
+                      value={m.vlr === 0 ? "" : m.vlr} // Lógica para não mostrar o 0
                       onChange={(e) => handleUpdateMaterial(index, 'vlr', e.target.value)}
+                      placeholder="0.00"
                       className="text-sm font-black text-[#064e3b] border-b border-slate-100 focus:border-[#064e3b] outline-none py-1 bg-transparent"
                     />
                   </div>
 
                   <div className="text-right hidden md:block">
                     <p className="text-[8px] font-black uppercase text-slate-400">Subtotal</p>
-                    <p className="text-xs font-black text-[#064e3b]">R$ {(m.qtd * m.vlr).toLocaleString()}</p>
+                    <p className="text-xs font-black text-[#064e3b]">R$ {(m.qtd * m.vlr).toLocaleString('pt-BR')}</p>
                   </div>
                 </div>
               ))}
@@ -151,8 +148,9 @@ function FinanceiroEditavel() {
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-[#b49157]">R$</span>
                 <input 
                   type="number" 
-                  value={produtoAtivo.maoDeObra}
+                  value={produtoAtivo.maoDeObra === 0 ? "" : produtoAtivo.maoDeObra} // Lógica de campo limpo
                   onChange={(e) => handleUpdateGeral('maoDeObra', e.target.value)}
+                  placeholder="0"
                   className="w-full pl-10 pr-4 py-4 rounded-xl border-2 border-slate-200 focus:border-[#064e3b] font-black text-[#064e3b] bg-white outline-none"
                 />
               </div>
@@ -164,8 +162,9 @@ function FinanceiroEditavel() {
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-[#b49157]">R$</span>
                 <input 
                   type="number" 
-                  value={produtoAtivo.custoFixoRateio}
+                  value={produtoAtivo.custoFixoRateio === 0 ? "" : produtoAtivo.custoFixoRateio} // Lógica de campo limpo
                   onChange={(e) => handleUpdateGeral('custoFixoRateio', e.target.value)}
+                  placeholder="0"
                   className="w-full pl-10 pr-4 py-4 rounded-xl border-2 border-slate-200 focus:border-[#064e3b] font-black text-[#064e3b] bg-white outline-none"
                 />
               </div>
@@ -176,10 +175,10 @@ function FinanceiroEditavel() {
 
       <div className="bg-slate-50 p-6 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center md:text-left">
-          * Os valores alterados impactam o markup de venda automaticamente.
+          * Valores editados atualizam o custo total em tempo real.
         </p>
         <button className="w-full md:w-auto bg-[#064e3b] text-white px-10 py-4 rounded-xl font-black uppercase text-xs tracking-[0.2em] shadow-xl active:scale-95 transition-all">
-          Salvar Alterações
+          Salvar Custos
         </button>
       </div>
     </div>
