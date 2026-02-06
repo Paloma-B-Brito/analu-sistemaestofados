@@ -157,7 +157,7 @@ function FinanceiroEditavel() {
         </div>
         {/* Footer Ações */}
         <div className="bg-white p-4 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 shrink-0">
-          <p className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em]">Markup Industrial: 2.5x — Rickman Brown — Software Engineering</p>
+
           <button className="w-full md:w-auto bg-[#064e3b] text-white px-8 py-3 rounded-xl font-black uppercase text-[9px] tracking-widest shadow-lg hover:brightness-110 transition-all">
             Gravar Nova Planilha
           </button>

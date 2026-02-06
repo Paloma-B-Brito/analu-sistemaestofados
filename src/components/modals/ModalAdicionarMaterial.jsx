@@ -1,11 +1,10 @@
 /**
  * @file ModalAdicionarMaterial.jsx
- * @description Registro de Insumos Técnicos para Produção
- * @author © 2026 — Rickman
+ * @description Registro de Insumos - Layout Padronizado Rickman Brown
+ * @author © 2026 — Rickman Brown • Software Engineering
  */
 
 import { useState } from "react";
-import "../../App.css";
 
 function ModalAdicionarMaterial({ onClose, onSalvar }) {
   const [formData, setFormData] = useState({
@@ -19,7 +18,7 @@ function ModalAdicionarMaterial({ onClose, onSalvar }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.material || !formData.quantidade || !formData.custoUnidade) {
-      alert("⚠️ Erro de Parâmetro: Preencha todos os dados técnicos antes de prosseguir.");
+      alert("⚠️ Parâmetros Insuficientes: Preencha todos os campos técnicos.");
       return;
     }
     onSalvar(formData); 
@@ -27,140 +26,131 @@ function ModalAdicionarMaterial({ onClose, onSalvar }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-end sm:items-center justify-center p-0 sm:p-4 font-sans">
-      {/* OVERLAY EXECUTIVO */}
+    <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 font-sans">
+      
+      {/* OVERLAY EXECUTIVO COM BLUR PROFUNDO */}
       <div 
-        className="absolute inset-0 bg-[#064e3b]/60 backdrop-blur-md animate-fade-in" 
+        className="absolute inset-0 bg-[#064e3b]/85 backdrop-blur-md transition-opacity duration-300" 
         onClick={onClose}
       ></div>
 
-      {/* CONTAINER DO MODAL - Mobile Sheet Design */}
-      <div className="relative bg-white rounded-t-[3rem] sm:rounded-[2.5rem] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.4)] w-full max-w-lg max-h-[92vh] overflow-hidden animate-slide-up border border-emerald-50 flex flex-col">
+      {/* CONTAINER MODAL PADRONIZADO (IDENTICO AO DE ESTOFADOS) */}
+      <div className="relative bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden border border-emerald-50/20 flex flex-col scale-100 transition-all">
         
-        {/* HEADER COM IDENTIDADE VISUAL */}
-        <div className="bg-[#064e3b] p-8 md:p-10 text-white text-left sticky top-0 z-10">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#b49157] mb-2 italic opacity-80">
-                Supply Chain Management
-              </p>
-              <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tighter leading-none">
-                Novo Insumo
-              </h2>
-            </div>
-            <button 
-              onClick={onClose}
-              className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-[#b49157] rounded-2xl text-white transition-all duration-300 border border-white/5"
-            >
-              <span className="text-xl">✕</span>
-            </button>
+        {/* HEADER SUPPLY CHAIN */}
+        <div className="bg-[#064e3b] p-6 text-white flex justify-between items-center shrink-0 border-b border-white/5">
+          <div className="text-left">
+            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-[#b49157] mb-0.5">Supply Chain</p>
+            <h2 className="text-xl font-black uppercase tracking-tighter leading-none">Novo Insumo</h2>
           </div>
+          <button 
+            type="button"
+            onClick={onClose} 
+            className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-rose-500/80 transition-all border border-white/10"
+          >
+            ✕
+          </button>
         </div>
 
-        {/* FORMULÁRIO */}
-        <div className="overflow-y-auto custom-scrollbar">
-          <form onSubmit={handleSubmit} className="p-8 md:p-10 space-y-10 text-left">
+        {/* FORMULÁRIO TÉCNICO PADRONIZADO */}
+        <form onSubmit={handleSubmit} className="p-7 space-y-5 bg-white">
+          
+          {/* ESPECIFICAÇÃO DO MATERIAL */}
+          <div className="space-y-1.5 text-left">
+            <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Especificação Técnica</label>
+            <input 
+              required
+              type="text" 
+              placeholder="Ex: Espuma D33 Soft"
+              className="w-full p-4 bg-slate-50 border border-slate-100 focus:border-[#b49157] focus:bg-white rounded-2xl font-bold text-[#064e3b] outline-none transition-all text-sm placeholder:text-slate-200"
+              value={formData.material}
+              onChange={(e) => setFormData({...formData, material: e.target.value.toUpperCase()})}
+            />
+          </div>
+
+          {/* GRID: CATEGORIA E UNIDADE */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5 text-left">
+              <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Categoria</label>
+              <div className="relative">
+                <select 
+                  className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-[#064e3b] outline-none text-xs appearance-none cursor-pointer"
+                  value={formData.categoria}
+                  onChange={(e) => setFormData({...formData, categoria: e.target.value})}
+                >
+                  <option value="Têxtil">Têxtil</option>
+                  <option value="Preenchimento">Preenchimento</option>
+                  <option value="Estrutura">Estrutura</option>
+                  <option value="Acabamento">Acabamento</option>
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#b49157] text-[10px]">▼</div>
+              </div>
+            </div>
+            <div className="space-y-1.5 text-left">
+              <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Unidade</label>
+              <div className="relative">
+                <select 
+                  className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-[#064e3b] outline-none text-xs appearance-none cursor-pointer"
+                  value={formData.unidade}
+                  onChange={(e) => setFormData({...formData, unidade: e.target.value})}
+                >
+                  <option value="Metros">Metros (m)</option>
+                  <option value="Blocos">Blocos (un)</option>
+                  <option value="Kg">Quilos (kg)</option>
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#b49157] text-[10px]">▼</div>
+              </div>
+            </div>
+          </div>
+
+          {/* DASHBOARD FINANCEIRO (QTD VS CUSTO) - IGUAL AO DE PRODUTOS */}
+          <div className="grid grid-cols-2 gap-4 p-5 bg-slate-900 rounded-[2rem] shadow-inner relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#b49157]/10 to-transparent pointer-events-none"></div>
             
-            {/* ESPECIFICAÇÃO DO MATERIAL */}
-            <div className="group">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1 block transition-colors group-focus-within:text-[#b49157]">
-                Material / Especificação Técnica
-              </label>
+            <div className="text-left relative z-10 border-r border-slate-800 pr-2">
+              <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Qtd. Entrada</label>
               <input 
                 required
-                type="text" 
-                placeholder="Ex: Espuma D33 Soft"
-                className="w-full border-b-2 border-slate-100 py-4 text-xl font-bold text-[#064e3b] outline-none focus:border-[#b49157] transition-all bg-transparent placeholder:text-slate-200"
-                value={formData.material}
-                onChange={(e) => setFormData({...formData, material: e.target.value})}
+                type="number" 
+                placeholder="0"
+                className="w-full bg-transparent py-1 font-black text-white outline-none focus:border-emerald-500 text-lg transition-all"
+                value={formData.quantidade}
+                onChange={(e) => setFormData({...formData, quantidade: e.target.value})}
               />
             </div>
 
-            {/* GRID: CATEGORIA E UNIDADE */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="flex flex-col space-y-3">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Categoria</label>
-                <div className="relative">
-                  <select 
-                    className="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-sm font-black text-[#064e3b] outline-none focus:ring-2 focus:ring-[#b49157] appearance-none cursor-pointer"
-                    value={formData.categoria}
-                    onChange={(e) => setFormData({...formData, categoria: e.target.value})}
-                  >
-                    <option value="Têxtil">Têxtil</option>
-                    <option value="Preenchimento">Preenchimento</option>
-                    <option value="Estrutura">Estrutura</option>
-                    <option value="Acabamento">Acabamento</option>
-                  </select>
-                  <span className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-[#b49157] opacity-50">▼</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col space-y-3">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Unidade de Medida</label>
-                <div className="relative">
-                  <select 
-                    className="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-sm font-black text-[#064e3b] outline-none focus:ring-2 focus:ring-[#b49157] appearance-none cursor-pointer"
-                    value={formData.unidade}
-                    onChange={(e) => setFormData({...formData, unidade: e.target.value})}
-                  >
-                    <option value="Metros">Metros (m)</option>
-                    <option value="Blocos">Blocos (un)</option>
-                    <option value="m³">Metros Cúbicos (m³)</option>
-                    <option value="Kg">Quilos (kg)</option>
-                  </select>
-                  <span className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-[#b49157] opacity-50">▼</span>
-                </div>
-              </div>
-            </div>
-
-            {/* GRID: QTD E CUSTO */}
-            <div className="grid grid-cols-2 gap-8 p-6 bg-slate-50 rounded-[2rem] border border-slate-100">
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Qtd. Entrada</label>
+            <div className="text-left relative z-10 pl-2">
+              <label className="text-[8px] font-black text-[#b49157] uppercase tracking-widest block text-right mb-1">Custo Un.</label>
+              <div className="flex items-center justify-end gap-1">
                 <input 
                   required
                   type="number" 
-                  inputMode="decimal"
-                  placeholder="0"
-                  className="w-full bg-transparent border-b-2 border-slate-200 py-2 text-2xl font-black text-[#064e3b] outline-none focus:border-[#064e3b]"
-                  value={formData.quantidade}
-                  onChange={(e) => setFormData({...formData, quantidade: e.target.value})}
+                  step="0.01"
+                  placeholder="0.00"
+                  className="w-full bg-transparent py-1 font-black text-white outline-none focus:border-[#b49157] text-lg text-right transition-all"
+                  value={formData.custoUnidade}
+                  onChange={(e) => setFormData({...formData, custoUnidade: e.target.value})}
                 />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-[#b49157] uppercase tracking-widest block">Custo Unitário</label>
-                <div className="relative">
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 text-sm font-black text-[#b49157] opacity-50">R$</span>
-                  <input 
-                    required
-                    type="number" 
-                    inputMode="decimal"
-                    step="0.01"
-                    placeholder="0.00"
-                    className="w-full bg-transparent border-b-2 border-[#b49157]/20 pl-7 py-2 text-2xl font-black text-[#064e3b] outline-none focus:border-[#b49157]"
-                    value={formData.custoUnidade}
-                    onChange={(e) => setFormData({...formData, custoUnidade: e.target.value})}
-                  />
-                </div>
+                <span className="text-[10px] font-black text-[#b49157]/50">R$</span>
               </div>
             </div>
-
-            <button 
-              type="submit" 
-              className="w-full py-6 bg-[#064e3b] text-white font-black uppercase tracking-[0.4em] rounded-[1.5rem] shadow-2xl hover:bg-[#b49157] transition-all duration-300 active:scale-[0.97] shadow-emerald-900/20 text-[11px]"
-            >
-              Registrar no Inventário
-            </button>
-          </form>
-
-          {/* FOOTER INFO */}
-          <div className="bg-slate-50 p-8 border-t border-slate-100 text-center pb-12 sm:pb-8">
-            <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.4em] flex items-center justify-center gap-2 italic">
-              <span className="w-1 h-1 bg-rose-400 rounded-full animate-pulse"></span>
-              Analu Inventory System v3.1 • Auditoria em Tempo Real
-            </p>
           </div>
+
+          {/* BOTÃO DE REGISTRO */}
+          <button 
+            type="submit"
+            className="w-full py-4.5 bg-[#064e3b] text-white rounded-2xl font-black uppercase tracking-[0.3em] shadow-xl hover:bg-[#b49157] hover:-translate-y-0.5 transition-all active:scale-[0.97] text-[10px] mt-2"
+          >
+            Registrar no Sistema
+          </button>
+        </form>
+
+        {/* FOOTER AUDIT */}
+        <div className="bg-slate-50 py-4 border-t border-slate-100">
+          <p className="text-[7px] font-black text-slate-300 uppercase tracking-[0.5em] text-center flex items-center justify-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Inventory Protocol • Rickman Brown
+          </p>
         </div>
       </div>
     </div>

@@ -17,6 +17,12 @@ import ModalConsultaGeral from "../components/modals/ModalConsultaGeral";
 function Dashboard() {
   const [modalAberto, setModalAberto] = useState(null);
   const fecharModal = () => setModalAberto(null);
+  
+  // Variável definida como estoqueExemplo
+  const [estoqueExemplo] = useState([
+    { id: "SOF-001", modelo: "Sofá Chesterfield", preco: 4500, status: "DISPONÍVEL" },
+    { id: "POL-022", modelo: "Poltrona Eames", preco: 2800, status: "DISPONÍVEL" },
+  ]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -33,7 +39,7 @@ function Dashboard() {
 
   return (
     <div className="fixed inset-0 bg-[#f8f9f5] flex flex-col overflow-hidden px-6 md:px-10 py-6 animate-fade-in font-sans">
-      
+
       {/* BACKGROUND DECOR */}
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-100/20 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
 
@@ -62,8 +68,8 @@ function Dashboard() {
 
       {/* CONTEÚDO */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        
-      {/* INDICADORES RÁPIDOS */}
+
+        {/* INDICADORES RÁPIDOS */}
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-9 shrink-0">
           {[
             { label: "Showroom", val: "1.240", color: "border-[#064e3b]", text: "text-[#064e3b]" },
@@ -86,21 +92,21 @@ function Dashboard() {
 
         {/* GRID DE AÇÕES COMPACTA */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-1 pb-8 px-4 "  >
-          
-          <ActionCard 
-            title="Novo Modelo" subtitle="Engenharia" domain="Eng" 
+
+          <ActionCard
+            title="Novo Modelo" subtitle="Engenharia" domain="Eng"
             icon="＋" color="hover:bg-emerald-50" accent="text-emerald-600" bgAccent="bg-emerald-50"
             onClick={() => setModalAberto("novo-estofado")}
           />
 
-          <ActionCard 
-            title="Entrada Insumos" subtitle="Suprimentos" domain="Supply" 
+          <ActionCard
+            title="Entrada Insumos" subtitle="Suprimentos" domain="Supply"
             icon="↓" color="hover:bg-slate-50" accent="text-slate-600" bgAccent="bg-slate-50"
             onClick={() => setModalAberto("entrada-materia")}
           />
 
-          <ActionCard 
-            title="Logística" subtitle="Fábrica → Loja" domain="Log" 
+          <ActionCard
+            title="Logística" subtitle="Fábrica → Loja" domain="Log"
             icon="⇄" color="hover:bg-amber-50" accent="text-[#b49157]" bgAccent="bg-amber-50"
             onClick={() => setModalAberto("saida-fabrica-loja")}
           />
@@ -119,14 +125,14 @@ function Dashboard() {
             </div>
           </button>
 
-          <ActionCard 
-            title="Relatar Avaria" subtitle="Perdas" domain="Quality" 
+          <ActionCard
+            title="Relatar Avaria" subtitle="Perdas" domain="Quality"
             icon="!" color="hover:bg-rose-50" accent="text-rose-600" bgAccent="bg-rose-50"
             onClick={() => setModalAberto("perda-producao")}
           />
 
-          <ActionCard 
-            title="Busca Global" subtitle="Consultar" domain="Search" 
+          <ActionCard
+            title="Busca Global" subtitle="Consultar" domain="Search"
             icon="🔍" color="hover:bg-slate-100" accent="text-slate-900" bgAccent="bg-slate-200"
             onClick={() => setModalAberto("consulta-geral")}
           />
@@ -147,7 +153,17 @@ function Dashboard() {
       {modalAberto === "novo-estofado" && <ModalNovoEstofado onClose={fecharModal} />}
       {modalAberto === "entrada-materia" && <ModalEntradaMateriaPrima onClose={fecharModal} />}
       {modalAberto === "saida-fabrica-loja" && <ModalSaidaProdutoEstofado onClose={fecharModal} />}
-      {modalAberto === "saida-venda" && <ModalSaidaProdutoVenda onClose={fecharModal} />}
+      {modalAberto === "saida-venda" && (
+        <ModalSaidaProdutoVenda
+          onClose={fecharModal}
+          estoqueDisponivel={estoqueExemplo} // Corrigido para bater com o nome da variável acima
+          onFinalizarVenda={(dados) => {
+            console.log("Venda realizada com sucesso:", dados);
+            fecharModal();
+          }}
+        />
+      )}
+
       {modalAberto === "perda-producao" && <ModalPerdaProducao onClose={fecharModal} />}
       {modalAberto === "consulta-geral" && <ModalConsultaGeral onClose={fecharModal} />}
     </div>

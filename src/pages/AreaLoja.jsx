@@ -260,7 +260,7 @@ function AreaLoja() {
 
         {/* RODAPÉ */}
         <div className="bg-slate-100 p-3 flex justify-between items-center px-8 shrink-0 no-print">
-          <p className="text-[8px] font-black text-slate-400 uppercase tracking-[0.3em]">© 2026 Rickman Brown • Software Engineering</p>
+          <p className="text-[8px] font-black text-slate-400 uppercase tracking-[0.3em]">© 2026 Rickman Brown</p>
           <div className="flex gap-4 items-center">
              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
              <span className="text-[8px] font-black text-emerald-500 uppercase">Sistema Operacional Online</span>
