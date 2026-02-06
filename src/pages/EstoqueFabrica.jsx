@@ -162,7 +162,7 @@ function EstoqueFabrica() {
       </main>
 
       <footer className="bg-white border-t p-4 px-8 flex justify-between items-center shrink-0">
-        <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Analu Executive • Rickman Interface v2.6</p>
+        <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Analu Executive • Rickman Brown — Software Engineering</p>
         <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500"></div><span className="text-[9px] font-black text-slate-500 uppercase">Live Production Feed</span></div>
       </footer>
     </div>

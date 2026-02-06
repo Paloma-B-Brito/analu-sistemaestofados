@@ -1,7 +1,7 @@
 /**
  * @file Dashboard.jsx
  * @description Core do Portal Executivo - Controle de Operações
- * @author © 2026 — Rickman
+ * @author © 2026 Rickman Brown — Software Engineering
  */
 
 import { useState, useEffect } from "react";
@@ -45,9 +45,8 @@ function Dashboard() {
               Analu <span className="text-[#b49157] font-light italic text-2xl">Portal</span>
             </h1>
             <div className="flex items-center gap-2 mt-1">
-              <p className="text-[8px] font-black text-slate-400 uppercase tracking-[0.3em]">© 2026 — RICKMAN DESIGN</p>
               <div className="h-0.5 w-0.5 rounded-full bg-slate-300"></div>
-              <p className="text-[8px] font-bold text-[#b49157] uppercase">{dataAtual}</p>
+              <p className="text-[12px] font-bold text-[#b49157] uppercase">{dataAtual}</p>
             </div>
           </div>
 
@@ -137,7 +136,7 @@ function Dashboard() {
 
       {/* FOOTER DISCRETO */}
       <footer className="shrink-0 pt-4 border-t border-slate-200 flex justify-between items-center text-[7px] font-black text-slate-400 uppercase tracking-[0.3em]">
-        <p>Analu Executive v2.6 // Rickman</p>
+        <p>Analu Executive </p>
         <div className="flex items-center gap-2">
           <div className="w-1 h-1 rounded-full bg-emerald-500"></div>
           <span>Cloud Active</span>
