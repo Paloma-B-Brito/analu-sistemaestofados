@@ -1,7 +1,7 @@
 /**
  * @file Dashboard.jsx
  * @description Core do Portal Executivo - Controle de Operações
- * @author © 2026 Rickman Brown — Software Engineering
+ * @author © 2026 Rickman Brown • Software Engineering
  */
 
 import { useState, useEffect } from "react";

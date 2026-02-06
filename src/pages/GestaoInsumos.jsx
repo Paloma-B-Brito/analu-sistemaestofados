@@ -1,7 +1,7 @@
 /**
  * @file GestaoInsumos.jsx
  * @description Gestão de MP (Matéria-Prima) e Monitoramento de Capacidade
- * @author © 2026 — Rickman
+ * @author © 2026 Rickman Brown • Software Engineering
  */
 
 import { useState } from "react";

@@ -1,7 +1,7 @@
 /**
  * @file Card.jsx
  * @description Componente de Indicador (KPI) de Alta Performance
- * @author © 2026 — Rickman
+ * @author © 2026 Rickman Brown • Software Engineering
  */
 
 import { useState } from "react";

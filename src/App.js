@@ -1,7 +1,7 @@
 /**
  * @file App.js
  * @description Core da Aplicação - Gestão de Rotas e Permissões
- * @author © 2026 — Rickman
+ * @author © 2026 Rickman Brown • Software Engineering
  */
 
 import { useState, useEffect } from "react";
@@ -99,7 +99,7 @@ function App() {
       {/* RODAPÉ PADRONIZADO - LIMPO E PROFISSIONAL */}
       <footer className="p-4 text-center border-t border-slate-100 bg-white">
         <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">
-          Analu Executive Suite • Acesso: <span className="text-slate-600">{role}</span> • © 2026 — Rickman
+          Analu Executive Suite • Acesso: <span className="text-slate-600">{role}</span> • © 2026 Rickman Brown • Software Engineering
         </p>
       </footer>
     </div>

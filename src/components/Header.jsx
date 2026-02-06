@@ -1,7 +1,7 @@
 /**
  * @file Header.jsx
  * @description Navegação Principal e Identidade Visual
- * @author © 2026 — Rickman
+ * @author © 2026 Rickman Brown • Software Engineering
  */
 
 import React, { useState } from 'react';

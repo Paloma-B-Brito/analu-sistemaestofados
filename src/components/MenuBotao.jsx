@@ -1,7 +1,7 @@
 /**
  * @file MenuBotao.jsx
  * @description Unidade de Navegação da Sidebar Analu (Premium UI)
- * @author © 2026 — Rickman
+ * @author © 2026 Rickman Brown • Software Engineering
  */
 
 function MenuBotao({ label, ativo, onClick }) {

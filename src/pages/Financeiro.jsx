@@ -1,7 +1,7 @@
 /**
  * @file Financeiro.jsx
  * @description Gestão de Precificação e Engenharia de Custos - Fixed Version
- * @author © 2026 — Rickman
+ * @author © 2026 Rickman Brown • Software Engineering
  */
 
 import { useState, useEffect } from "react";

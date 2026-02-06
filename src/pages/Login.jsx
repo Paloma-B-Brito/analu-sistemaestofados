@@ -1,7 +1,7 @@
 /**
  * @file Login.jsx
  * @description Gateway de Autenticação Biométrico/Digital - Analu v3.0
- * @author © 2026 — Rickman
+ * @author © 2026 Rickman Brown • Software Engineering
  */
 
 import { useState } from "react";
@@ -147,7 +147,7 @@ function Login({ onLogin }) {
           <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.5em]">
             Protocolo de Segurança Ativo v3.0
           </p>
-          <p className="text-[7px] font-bold text-slate-200 uppercase mt-2">© 2026 Rickman Brown — Software Engineering</p>
+          <p className="text-[7px] font-bold text-slate-200 uppercase mt-2">© 2026 Rickman Brown • Software Engineering</p>
         </div>
       </div>
     </div>
