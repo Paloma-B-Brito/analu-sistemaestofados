@@ -1,6 +1,6 @@
 /**
  * @file Login.jsx
- * @description Gateway de Autenticação Biométrico/Digital - Analu v3.0
+ * @description Sistema de Autenticação Integrado
  * @author © 2026 Rickman Brown • Software Engineering
  */
 
@@ -12,6 +12,9 @@ function Login({ onLogin }) {
   const [verSenha, setVerSenha] = useState(false);
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
+
+  // Endpoint do Backend Spring Boot
+  const API_AUTH_URL = "http://localhost:8080/api/auth/login";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,26 +28,35 @@ function Login({ onLogin }) {
     setCarregando(true);
 
     try {
-      // Simulação de chamada de API (Substituir pelo seu endpoint real)
-      const response = await fetch('http://localhost:8080/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ login: usuario, senha: senha }),
+      const response = await fetch(API_AUTH_URL, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        // Mapeado exatamente para o seu LoginRequestDTO.java
+        body: JSON.stringify({ 
+          login: usuario, 
+          senha: senha 
+        }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        if (data) {
-          localStorage.setItem("userRole", data.role);
-          localStorage.setItem("userName", data.nome);
-          onLogin(data.role); 
-        } else {
-          setErro("Acesso Negado: Perfil não localizado.");
-        }
+        
+        // Persistência de Sessão no Browser
+        localStorage.setItem("userRole", data.role);
+        localStorage.setItem("userName", data.nome);
+        
+        // Notifica o App.js sobre a mudança de estado
+        onLogin(data.role); 
+      } else if (response.status === 401) {
+        setErro("Acesso Negado: Credenciais Inválidas.");
       } else {
-        setErro("Falha na autenticação: Credenciais Inválidas.");
+        setErro("Erro no Core: Resposta inesperada do servidor.");
       }
     } catch (error) {
+      console.error("Conexão falhou:", error);
       setErro("Servidor indisponível: Verifique a conexão com o banco Analu.");
     } finally {
       setCarregando(false);
@@ -75,6 +87,7 @@ function Login({ onLogin }) {
           </p>
         </div>
 
+        {/* MENSAGEM DE ERRO CRÍTICO */}
         {erro && (
           <div className="mb-8 p-4 bg-rose-50 text-rose-700 text-[10px] font-black uppercase tracking-widest border-l-[6px] border-rose-500 flex items-center gap-3 animate-shake">
             <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

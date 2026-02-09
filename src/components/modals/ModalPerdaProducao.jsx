@@ -1,6 +1,6 @@
 /**
  * @file ModalPerdaProducao.jsx
- * @description Gestão de Avarias e Controle de Qualidade (Slim Version)
+ * @description Gestão de Avarias e Controle de Qualidade 
  * @author © 2026 — Rickman Brown
  */
 

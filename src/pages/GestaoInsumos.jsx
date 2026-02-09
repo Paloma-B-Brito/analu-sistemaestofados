@@ -1,6 +1,6 @@
 /**
  * @file GestaoInsumos.jsx
- * @description Gestão de MP - Layout Ultra-Compacto (High-Density)
+ * @description Gestão de Insumos
  * @author © 2026 Rickman Brown • Software Engineering
  */
 

@@ -1,6 +1,6 @@
 /**
  * @file Financeiro.jsx
- * @description Gestão de Precificação e Engenharia de Custos - Fixed Version
+ * @description Gestão de Precificação e Engenharia de Custos - Versão Resumida para Análise Rápida
  * @author © 2026 Rickman Brown • Software Engineering
  */
 

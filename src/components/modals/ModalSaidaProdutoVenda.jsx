@@ -1,6 +1,6 @@
 /**
  * @file ModalSaidaProdutoVenda.jsx
- * @description Terminal de Checkout (POS) — Versão Integrada ao Estoque
+ * @description Terminal de Checkout — Versão Integrada ao Estoque
  * @author © 2026 — Rickman Brown • Engineering
  */
 

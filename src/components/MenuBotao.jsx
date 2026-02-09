@@ -1,6 +1,6 @@
 /**
  * @file MenuBotao.jsx
- * @description Unidade de Navegação da Sidebar Analu (Premium UI)
+ * @description Unidade de Navegação da Sidebar - Botão com Indicador de Status
  * @author © 2026 Rickman Brown • Software Engineering
  */
 

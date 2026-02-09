@@ -1,6 +1,6 @@
 /**
  * @file ModalSaidaProdutoEstofado.jsx
- * @description Protocolo de Logística: Saída de Fábrica (Compacto)
+ * @description Protocolo de Logística: Saída de Fábrica 
  * @author © 2026 — Rickman Brown
  */
 

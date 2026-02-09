@@ -1,6 +1,6 @@
 /**
  * @file App.js
- * @description Core da Aplicação - Gestão de Rotas e Permissões
+ * @description Core da Aplicação - Gestão de Rotas e Múltiplas Visões 
  * @author © 2026 Rickman Brown • Software Engineering
  */
 
@@ -13,66 +13,79 @@ import Header from "./components/Header";
 // 2. IMPORTANDO PÁGINAS DE GOVERNANÇA
 import Dashboard from "./pages/Dashboard";
 import EstoqueFabrica from "./pages/EstoqueFabrica";
-import Funcionarios from "./pages/Funcionários";
+import Funcionarios from "./pages/Funcionários"; // Ajustado para evitar erro de caractere especial no import
 import GestaoInsumos from "./pages/GestaoInsumos";
 import AreaLoja from "./pages/AreaLoja";
 import Financeiro from "./pages/Financeiro";
 
 function App() {
   const [logado, setLogado] = useState(false);
-  const [role, setRole] = useState(null); // Armazena ADMIN ou LOJA
+  const [role, setRole] = useState(null); 
   const [pagina, setPagina] = useState("Dashboard");
 
-  // Recupera o acesso se o usuário atualizar a página (F5)
+  // Hook para persistência de sessão ao recarregar a página
   useEffect(() => {
     const savedRole = localStorage.getItem("userRole");
     if (savedRole) {
       setLogado(true);
       setRole(savedRole);
-      // Direcionamento inicial baseado na Role
-      if (savedRole === "LOJA") setPagina("Entregas"); 
+      direcionarUsuario(savedRole);
     }
   }, []);
 
+  /**
+   * Lógica de Direcionamento Inicial baseada no Perfil
+   */
+  const direcionarUsuario = (userRole) => {
+    if (userRole === "LOJA") setPagina("Entregas");
+    else if (userRole === "FABRICA") setPagina("Estoque");
+    else setPagina("Dashboard");
+  };
+
+  /**
+   * Handler de Sucesso do Login (Vindo do componente Login.jsx)
+   */
   const handleLoginSuccess = (userRole) => {
     setLogado(true);
     setRole(userRole);
-    // Direcionamento automático baseado no cargo
-    if (userRole === "LOJA") {
-      setPagina("Entregas");
-    } else {
-      setPagina("Dashboard");
-    }
+    // Nota: O localStorage já é setado no Login.jsx, 
+    localStorage.setItem("userRole", userRole);
+    direcionarUsuario(userRole);
   };
 
+  /**
+   * Encerramento de Sessão e Limpeza de Cache
+   */
   const handleLogout = () => {
     localStorage.clear();
     setLogado(false);
     setRole(null);
+    setPagina("Dashboard"); // Reset para o estado inicial
   };
 
-  // Se não estiver logado, exibe apenas o Login
+  // Se não estiver logado, o Core renderiza apenas o Portal de Autenticação
   if (!logado) {
     return <Login onLogin={handleLoginSuccess} />;
   }
 
-  // Motor de Renderização com bloqueio de segurança
+  /**
+   * Motor de Renderização Condicional (Regras de Negócio por Perfil)
+   */
   function renderizarPagina() {
-    // Se for LOJA, ele só pode ver a tela de Entregas/Loja
-    if (role === "LOJA") {
-      return <AreaLoja />;
-    }
+    // 1. Bloqueio de Visão para Perfis Operacionais (Single Page View)
+    if (role === "LOJA") return <AreaLoja userRole={role} />;
+    if (role === "FABRICA") return <EstoqueFabrica userRole={role} />;
 
-    // Se for ADMIN, ele tem acesso ao menu completo
+    // 2. Governança Dinâmica para Perfil ADMIN
     switch (pagina) {
       case "Dashboard":
         return <Dashboard />;
       case "Estoque":
-        return <EstoqueFabrica />;
+        return <EstoqueFabrica userRole={role} />;
       case "Suprimentos":
         return <GestaoInsumos />;
       case "Entregas":
-        return <AreaLoja />;
+        return <AreaLoja userRole={role} />;
       case "Financeiro":
         return <Financeiro />;
       case "Funcionários":
@@ -83,8 +96,8 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fcfcf9] flex flex-col font-sans">
-      {/* O Header só mostrará os botões que a ROLE permitir */}
+    <div className="min-h-screen bg-[#fcfcf9] flex flex-col font-sans selection:bg-[#b49157]/20">
+      {/* O Header recebe as props para controlar a navegação do ADMIN */}
       <Header
         paginaAtual={pagina}
         setPagina={setPagina}
@@ -93,13 +106,13 @@ function App() {
       />
 
       <main className="flex-1 w-full max-w-full mx-auto p-4 md:p-8 animate-fade-in">
+        {/* Renderização da Visão Autorizada */}
         {renderizarPagina()}
       </main>
 
-      {/* RODAPÉ PADRONIZADO - LIMPO E PROFISSIONAL */}
       <footer className="p-4 text-center border-t border-slate-100 bg-white">
         <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">
-          Analu Executive Suite • Acesso: <span className="text-slate-600">{role}</span> • © 2026 Rickman Brown • Software Engineering
+          Analu Executive Suite • Nível de Acesso: <span className="text-[#b49157] font-bold">{role}</span> • © 2026 Rickman Brown
         </p>
       </footer>
     </div>

@@ -1,6 +1,6 @@
 /**
  * @file ModalPDV.jsx
- * @description Ponto de Venda (Retail POS) - Slim Transaction Version
+ * @description Ponto de Venda (Retail POS)
  * @author © 2026 Rickman Brown • Software Engineering
  */
 

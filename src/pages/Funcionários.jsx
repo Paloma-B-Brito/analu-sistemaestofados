@@ -1,6 +1,6 @@
 /**
  * @file Funcionarios.jsx
- * @description Gestão de Capital Humano - Fixed Version (Corrigida)
+ * @description Gestão de Capital Humano - Fixed Version
  * @author © 2026 Rickman Brown • Software Engineering
  */
 
