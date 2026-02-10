@@ -1,12 +1,11 @@
 /**
  * @file Dashboard.jsx
- * @description Core do Portal Executivo - Controle de Operações
+ * @description Core do Portal Executivo - Conectado à API Java/Postgres
  * @author © 2026 Rickman Brown • Software Engineering
  */
 
 import { useState, useEffect } from "react";
 import "../App.css";
-
 import ModalNovoEstofado from "../components/modals/ModalNovoEstofado";
 import ModalEntradaMateriaPrima from "../components/modals/ModalEntradaMateriaPrima";
 import ModalSaidaProdutoVenda from "../components/modals/ModalSaidaProdutoVenda";
@@ -16,22 +15,59 @@ import ModalConsultaGeral from "../components/modals/ModalConsultaGeral";
 
 function Dashboard() {
   const [modalAberto, setModalAberto] = useState(null);
-  const fecharModal = () => setModalAberto(null);
   
-  // Variável definida como estoqueExemplo
-  const [estoqueExemplo] = useState([
-    { id: "SOF-001", modelo: "Sofá Chesterfield", preco: 4500, status: "DISPONÍVEL" },
-    { id: "POL-022", modelo: "Poltrona Eames", preco: 2800, status: "DISPONÍVEL" },
-  ]);
+  // 1. ESTADO PARA DADOS REAIS (Inicia zerado aguardando o Backend)
+  const [kpis, setKpis] = useState({
+    showroom: 0,
+    producao: 0,
+    criticos: 0,
+    receita: 0
+  });
 
+  const [statusSistema, setStatusSistema] = useState("Conectando...");
+  const [corStatus, setCorStatus] = useState("bg-slate-300");
+
+  // 2. FUNÇÃO QUE BUSCA DADOS NO JAVA (GET)
+  const carregarIndicadores = async () => {
+    try {
+      // Nota: Precisará criar este endpoint no Java depois
+      const response = await fetch("http://localhost:8080/api/dashboard/resumo");
+      
+      if (response.ok) {
+        const dados = await response.json();
+        setKpis({
+          showroom: dados.totalShowroom || 0,
+          producao: dados.totalProducao || 0,
+          criticos: dados.totalCriticos || 0,
+          receita: dados.totalReceita || 0
+        });
+        setStatusSistema("Operacional");
+        setCorStatus("bg-emerald-500");
+      } else {
+        setStatusSistema("Erro API");
+        setCorStatus("bg-rose-500");
+      }
+    } catch (error) {
+      console.error("Erro ao conectar com o backend:", error);
+      setStatusSistema("Offline");
+      setCorStatus("bg-rose-500");
+      
+      // MOCK DE FALLBACK (Para não ficar zerado se o Java estiver desligado)
+      setKpis({ showroom: 1240, producao: 18, criticos: 5, receita: 45200 });
+    }
+  };
+
+  // 3. EFEITO DE CARREGAMENTO INICIAL
   useEffect(() => {
+    carregarIndicadores();
     document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "unset";
-      document.documentElement.style.overflow = "unset";
-    };
+    return () => { document.body.style.overflow = "unset"; };
   }, []);
+
+  const fecharModal = () => {
+    setModalAberto(null);
+    carregarIndicadores(); 
+  };
 
   const dataAtual = new Date().toLocaleDateString("pt-BR", {
     weekday: "long", year: "numeric", month: "long", day: "numeric",
@@ -58,10 +94,12 @@ function Dashboard() {
 
           <div className="flex items-center gap-4 bg-white/50 border border-slate-200 p-2 rounded-xl">
             <div className="text-right hidden sm:block">
-              <p className="text-[8px] font-black text-slate-400 uppercase leading-none">Status</p>
-              <p className="text-[9px] font-bold text-emerald-600 uppercase">Encriptado</p>
+              <p className="text-[8px] font-black text-slate-400 uppercase leading-none">Status Conexão</p>
+              <p className={`text-[9px] font-bold uppercase ${statusSistema === "Offline" ? "text-rose-600" : "text-emerald-600"}`}>
+                {statusSistema}
+              </p>
             </div>
-            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+            <div className={`w-2 h-2 ${corStatus} rounded-full animate-pulse`}></div>
           </div>
         </div>
       </header>
@@ -72,10 +110,10 @@ function Dashboard() {
         {/* INDICADORES RÁPIDOS */}
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-9 shrink-0">
           {[
-            { label: "Showroom", val: "1.240", color: "border-[#064e3b]", text: "text-[#064e3b]" },
-            { label: "Produção", val: "18", color: "border-slate-300", text: "text-slate-700" },
-            { label: "Críticos", val: "05", color: "border-rose-500", text: "text-rose-600" },
-            { label: "Receita", val: "45.2k", color: "border-[#b49157]", text: "text-[#b49157]" }
+            { label: "Showroom", val: kpis.showroom, color: "border-[#064e3b]", text: "text-[#064e3b]" },
+            { label: "Produção", val: kpis.producao, color: "border-slate-300", text: "text-slate-700" },
+            { label: "Críticos", val: kpis.criticos, color: "border-rose-500", text: "text-rose-600" },
+            { label: "Receita", val: `R$ ${(kpis.receita / 1000).toFixed(1)}k`, color: "border-[#b49157]", text: "text-[#b49157]" }
           ].map((item, i) => (
             <div key={i} className={`bg-white/80 p-4 border-b-2 ${item.color} rounded-xl shadow-sm transition-transform hover:translate-y-[-2px]`}>
               <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">{item.label}</label>
@@ -86,12 +124,12 @@ function Dashboard() {
 
         {/* DIVISOR */}
         <div className="flex items-center gap-4 mb-4 shrink-0">
-          <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#064e3b]/30">Operations</span>
+          <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#064e3b]/30">Operations Center</span>
           <div className="h-px flex-1 bg-slate-200"></div>
         </div>
 
-        {/* GRID DE AÇÕES COMPACTA */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-1 pb-8 px-4 "  >
+        {/* GRID DE AÇÕES */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-1 pb-8 px-4 overflow-y-auto">
 
           <ActionCard
             title="Novo Modelo" subtitle="Engenharia" domain="Eng"
@@ -111,7 +149,7 @@ function Dashboard() {
             onClick={() => setModalAberto("saida-fabrica-loja")}
           />
 
-          {/* BOTÃO VENDA (TAMANHO REDUZIDO) */}
+          {/* BOTÃO VENDA */}
           <button
             onClick={() => setModalAberto("saida-venda")}
             className="group relative flex flex-col justify-between p-5 bg-[#064e3b] rounded-2xl text-left transition-all duration-300 hover:shadow-lg hover:brightness-110"
@@ -140,36 +178,34 @@ function Dashboard() {
         </section>
       </main>
 
-      {/* FOOTER DISCRETO */}
+      {/* FOOTER */}
       <footer className="shrink-0 pt-4 border-t border-slate-200 flex justify-between items-center text-[7px] font-black text-slate-400 uppercase tracking-[0.3em]">
         <p>Analu Executive </p>
         <div className="flex items-center gap-2">
-          <div className="w-1 h-1 rounded-full bg-emerald-500"></div>
+          <div className={`w-1 h-1 rounded-full ${corStatus}`}></div>
           <span>Cloud Active</span>
         </div>
       </footer>
 
-      {/* MODAIS */}
-      {modalAberto === "novo-estofado" && <ModalNovoEstofado onClose={fecharModal} />}
-      {modalAberto === "entrada-materia" && <ModalEntradaMateriaPrima onClose={fecharModal} />}
-      {modalAberto === "saida-fabrica-loja" && <ModalSaidaProdutoEstofado onClose={fecharModal} />}
+      {/* MODAIS - onSuccess para recarregar os dados ao fechar */}
+      {modalAberto === "novo-estofado" && <ModalNovoEstofado onClose={fecharModal} onSuccess={carregarIndicadores} />}
+      {modalAberto === "entrada-materia" && <ModalEntradaMateriaPrima onClose={fecharModal} onSuccess={carregarIndicadores} />}
+      {modalAberto === "saida-fabrica-loja" && <ModalSaidaProdutoEstofado onClose={fecharModal} onSuccess={carregarIndicadores} />}
+      
       {modalAberto === "saida-venda" && (
         <ModalSaidaProdutoVenda
           onClose={fecharModal}
-          estoqueDisponivel={estoqueExemplo} // Corrigido para bater com o nome da variável acima
-          onFinalizarVenda={(dados) => {
-            console.log("Venda realizada com sucesso:", dados);
-            fecharModal();
-          }}
+          onSuccess={carregarIndicadores}
         />
       )}
 
-      {modalAberto === "perda-producao" && <ModalPerdaProducao onClose={fecharModal} />}
+      {modalAberto === "perda-producao" && <ModalPerdaProducao onClose={fecharModal} onSuccess={carregarIndicadores} />}
       {modalAberto === "consulta-geral" && <ModalConsultaGeral onClose={fecharModal} />}
     </div>
   );
 }
 
+// Componente Auxiliar de Card
 function ActionCard({ title, subtitle, domain, icon, color, accent, bgAccent, onClick }) {
   return (
     <button
