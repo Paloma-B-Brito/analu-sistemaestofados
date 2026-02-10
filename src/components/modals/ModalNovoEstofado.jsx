@@ -1,131 +1,130 @@
-/**
- * @file ModalNovoEstofado.jsx
- * @description Registro de Ativos - Layout High-Density
- * @author © 2026 Rickman Brown • Software Engineering
- */
-
 import { useState } from "react";
 
-function ModalNovoEstofado({ onClose }) {
-  const [produto, setProduto] = useState({
-    nome: "",
-    categoria: "Estofado",
-    precoVenda: "",
-    custoProducao: "",
-    estoqueInicial: "",
-    descricao: ""
+function ModalNovoEstofado({ onClose, onSuccess }) {
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    modelo: "",
+    status: "EM_PRODUCAO", // Padrão ao criar
+    valor: "",
+    custo: ""
   });
 
-  const categorias = ["Estofado", "Cosméticos", "Decoração", "Acessórios"];
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`ITEM INTEGRADO: ${produto.nome.toUpperCase()}`);
-    onClose();
+  const salvarNoBanco = async () => {
+    // Validação simples
+    if (!formData.modelo || !formData.valor) return alert("Preencha os campos obrigatórios!");
+
+    setLoading(true);
+
+    try {
+      // O FETCH (POST) QUE MANDA PRO JAVA
+      const response = await fetch("http://localhost:8080/api/estofados", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          modelo: formData.modelo,
+          status: formData.status,
+          valor: parseFloat(formData.valor), // Converte texto para número
+          custo: parseFloat(formData.custo)
+        })
+      });
+
+      if (response.ok) {
+        alert("✅ Estofado cadastrado com sucesso!");
+        if (onSuccess) onSuccess(); // Atualiza o Dashboard
+        onClose(); // Fecha o modal
+      } else {
+        alert("Erro ao salvar no sistema.");
+      }
+    } catch (error) {
+      console.error("Erro de conexão:", error);
+      alert("Erro: O Java parece estar desligado.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 font-sans">
-      {/* OVERLAY EXECUTIVO */}
-      <div className="absolute inset-0 bg-[#064e3b]/60 backdrop-blur-sm transition-opacity" onClick={onClose}></div>
-
-      <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-sm overflow-hidden border border-emerald-50 animate-slide-up">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
         
-        {/* HEADER SLIM */}
-        <div className="bg-[#064e3b] px-6 py-4 text-white flex justify-between items-center">
-          <div className="text-left">
-            <p className="text-[8px] font-black uppercase tracking-[0.4em] text-[#b49157]">Asset Entry</p>
-            <h2 className="text-lg font-black uppercase tracking-tighter">Novo Cadastro</h2>
-          </div>
-          <button onClick={onClose} className="text-white/40 hover:text-white transition-colors text-xl font-light">✕</button>
+        {/* Header */}
+        <div className="bg-[#064e3b] p-6 text-white flex justify-between items-center">
+          <h2 className="text-xl font-black uppercase tracking-tighter">Novo Modelo</h2>
+          <button onClick={onClose} className="text-white/50 hover:text-white transition-colors">✕</button>
         </div>
 
-        {/* FORMULÁRIO COMPACTO */}
-        <form onSubmit={handleSubmit} className="p-5 space-y-3 bg-white text-left">
-          
-          <div className="space-y-1">
-            <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest ml-1">Modelo / Referência</label>
+        {/* Form */}
+        <div className="p-6 space-y-4 overflow-y-auto">
+          <div>
+            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Modelo do Estofado</label>
             <input 
-              required
+              name="modelo" 
+              value={formData.modelo} 
+              onChange={handleChange}
               type="text" 
-              placeholder="Ex: Sofá Milano"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-100 focus:border-[#b49157] rounded-xl font-bold text-[#064e3b] outline-none text-xs transition-all"
-              onChange={(e) => setProduto({...produto, nome: e.target.value})}
+              placeholder="Ex: Sofá Retrátil 3 Lugares" 
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold text-[#064e3b] focus:outline-none focus:border-[#b49157]" 
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest ml-1">Categoria</label>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Destino Inicial</label>
               <select 
-                className="w-full px-3 py-2.5 bg-slate-50 border border-slate-100 rounded-xl font-bold text-[#064e3b] outline-none text-[10px]"
-                value={produto.categoria}
-                onChange={(e) => setProduto({...produto, categoria: e.target.value})}
+                name="status" 
+                value={formData.status} 
+                onChange={handleChange}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold text-slate-600 focus:outline-none focus:border-[#b49157]"
               >
-                {categorias.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                <option value="EM_PRODUCAO">Fábrica (Produção)</option>
+                <option value="DISPONIVEL">Showroom (Pronto)</option>
+                <option value="CRITICO">Manutenção</option>
               </select>
             </div>
-            <div className="space-y-1">
-              <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest ml-1">Qtd Inicial</label>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Custo Produção (R$)</label>
               <input 
-                required
+                name="custo" 
                 type="number" 
-                placeholder="0"
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl font-black text-[#064e3b] outline-none text-xs"
-                onChange={(e) => setProduto({...produto, estoqueInicial: e.target.value})}
+                value={formData.custo} 
+                onChange={handleChange}
+                placeholder="0.00" 
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold text-rose-500 focus:outline-none focus:border-[#b49157]" 
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Preço Venda (R$)</label>
+              <input 
+                name="valor" 
+                type="number" 
+                value={formData.valor} 
+                onChange={handleChange}
+                placeholder="0.00" 
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold text-emerald-600 focus:outline-none focus:border-[#b49157]" 
               />
             </div>
           </div>
+        </div>
 
-          {/* DASHBOARD FINANCEIRO INTERNO */}
-          <div className="grid grid-cols-2 gap-2 p-3 bg-slate-900 rounded-xl shadow-inner">
-            <div className="border-r border-white/5 pr-2">
-              <label className="text-[7px] font-black text-rose-400 uppercase mb-0.5 block">Custo Unit.</label>
-              <div className="flex items-center">
-                <span className="text-[10px] text-white/30 mr-1">R$</span>
-                <input 
-                  type="number" 
-                  className="w-full bg-transparent font-black text-white outline-none text-sm"
-                  onChange={(e) => setProduto({...produto, custoProducao: e.target.value})}
-                />
-              </div>
-            </div>
-            <div className="pl-2">
-              <label className="text-[7px] font-black text-emerald-400 uppercase mb-0.5 block">Preço Venda</label>
-              <div className="flex items-center">
-                <span className="text-[10px] text-white/30 mr-1">R$</span>
-                <input 
-                  type="number" 
-                  className="w-full bg-transparent font-black text-white outline-none text-sm"
-                  onChange={(e) => setProduto({...produto, precoVenda: e.target.value})}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest ml-1">Notas Técnicas</label>
-            <textarea 
-              rows="2"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl font-medium text-slate-600 outline-none text-[10px] resize-none"
-              placeholder="Ex: Veludo Cinza, pés de metal..."
-              onChange={(e) => setProduto({...produto, descricao: e.target.value})}
-            ></textarea>
-          </div>
-
-          <button 
-            type="submit"
-            className="w-full py-3.5 bg-[#064e3b] text-white rounded-xl font-black uppercase tracking-widest shadow-lg hover:bg-[#b49157] transition-all text-[9px] active:scale-[0.97]"
-          >
-            Registrar no Acervo
+        {/* Footer Actions */}
+        <div className="p-4 border-t bg-slate-50 flex justify-end gap-3">
+          <button onClick={onClose} className="px-6 py-3 rounded-xl text-[10px] font-black uppercase text-slate-400 hover:bg-slate-200 transition-colors">
+            Cancelar
           </button>
-        </form>
-
-        {/* FOOTER */}
-        <div className="bg-slate-50 py-2 border-t border-slate-100">
-          <p className="text-[7px] font-black text-slate-300 uppercase tracking-[0.4em] text-center">
-            SCM Rickman Brown
-          </p>
+          <button 
+            onClick={salvarNoBanco} 
+            disabled={loading}
+            className="px-8 py-3 rounded-xl text-[10px] font-black uppercase bg-[#064e3b] text-white hover:bg-[#b49157] transition-all disabled:opacity-50"
+          >
+            {loading ? "Salvando..." : "Confirmar Cadastro"}
+          </button>
         </div>
       </div>
     </div>
