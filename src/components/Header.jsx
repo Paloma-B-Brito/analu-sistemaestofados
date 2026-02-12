@@ -1,151 +1,223 @@
 /**
  * @file Header.jsx
- * @description Navegação Principal com Controle de Acesso e Identidade Visual
+ * @description Navegação ERP Enterprise - Identidade Visual Green & Gold
  * @author © 2026 Rickman Brown • Software Engineering
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  ChevronDown, Menu, X, LogOut, 
+  BarChart2, PieChart, Activity, // Dashboard
+  Factory, Package, Wrench, ClipboardList, Truck, // Fábrica
+  ShoppingBag, Users, CreditCard, Tag, // Loja
+  DollarSign, TrendingUp, FileText, Wallet // Financeiro
+} from 'lucide-react';
+
+// --- ESTRUTURA DO ERP ---
+const menuStructure = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    icon: <BarChart2 size={16} />,
+    color: 'group-hover:text-emerald-300',
+    role: 'ADMIN',
+    subItems: [
+      { label: 'Visão Geral (Real-Time)', page: 'Dashboard', icon: <Activity size={14} /> },
+      { label: 'Indicadores (KPIs)', page: 'Dashboard', icon: <PieChart size={14} /> },
+      { label: 'Relatórios Gerenciais', page: 'Relatorios', icon: <FileText size={14} /> }
+    ]
+  },
+  {
+    id: 'fabrica',
+    label: 'Fábrica',
+    icon: <Factory size={16} />,
+    color: 'group-hover:text-blue-300',
+    role: 'FABRICA', 
+    subItems: [
+      { label: 'Linha de Produção (PCP)', page: 'Estoque', icon: <Factory size={14} /> },
+      { label: 'Estoque de Matéria-Prima', page: 'Suprimentos', icon: <Package size={14} /> },
+      { label: 'Controle de Qualidade', page: 'Qualidade', icon: <ClipboardList size={14} /> },
+      { label: 'Manutenção de Ativos', page: 'Manutencao', icon: <Wrench size={14} /> }
+    ]
+  },
+  {
+    id: 'loja',
+    label: 'Loja',
+    icon: <ShoppingBag size={16} />,
+    color: 'group-hover:text-rose-300',
+    role: 'LOJA',
+    subItems: [
+      { label: 'Showroom Digital', page: 'Loja', icon: <Tag size={14} /> },
+      { label: 'PDV (Frente de Caixa)', page: 'PDV', icon: <CreditCard size={14} /> },
+      { label: 'Gestão de Pedidos', page: 'Pedidos', icon: <ClipboardList size={14} /> },
+      { label: 'Logística & Entregas', page: 'Entregas', icon: <Truck size={14} /> },
+      { label: 'CRM (Clientes)', page: 'Clientes', icon: <Users size={14} /> }
+    ]
+  },
+  {
+    id: 'financeiro',
+    label: 'Financeiro',
+    icon: <DollarSign size={16} />,
+    color: 'group-hover:text-[#b49157]',
+    role: 'ADMIN',
+    subItems: [
+      { label: 'Engenharia de Custos', page: 'Financeiro', icon: <Wrench size={14} /> },
+      { label: 'Fluxo de Caixa', page: 'FluxoCaixa', icon: <TrendingUp size={14} /> },
+      { label: 'DRE Gerencial', page: 'DRE', icon: <FileText size={14} /> },
+      { label: 'Contas a Pagar/Receber', page: 'Contas', icon: <Wallet size={14} /> }
+    ]
+  }
+];
 
 function Header({ paginaAtual, setPagina, onLogout, userRole }) {
-  const [menuAberto, setMenuAberto] = useState(false);
+  const [menuMobileAberto, setMenuMobileAberto] = useState(false);
+  const [dropdownAtivo, setDropdownAtivo] = useState(null);
+  const dropdownRef = useRef(null);
 
-  const colors = {
-    executiveGreen: "#064e3b",
-    adminSlate: "#1e293b", 
-    goldMute: "#b49157",
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownAtivo(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleNavegar = (pagina) => {
+    setPagina(pagina);
+    setMenuMobileAberto(false);
+    setDropdownAtivo(null);
   };
 
-  // Botão Interno para manter o DRY (Don't Repeat Yourself)
-  function Botao({ label, nomePagina, mobile = false }) {
-    const ativo = paginaAtual === nomePagina;
+  const toggleDropdown = (id) => {
+    setDropdownAtivo(dropdownAtivo === id ? null : id);
+  };
 
-    return (
-      <button
-        onClick={() => {
-          setPagina(nomePagina);
-          if (mobile) setMenuAberto(false);
-        }}
-        className={`
-          relative px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] transition-all whitespace-nowrap rounded-xl
-          ${mobile ? "w-full text-left py-4 text-sm" : ""}
-          ${ativo
-            ? "text-white bg-white/10 shadow-sm"
-            : mobile ? "text-emerald-100/60" : "text-emerald-100/40 hover:text-white hover:bg-white/5"
-          }
-        `}
-      >
-        <span className={ativo ? "text-[#b49157]" : ""}>{label}</span>
-        {ativo && !mobile && (
-          <div
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full"
-            style={{ backgroundColor: colors.goldMute }}
-          />
-        )}
-      </button>
-    );
-  }
+  const menuFiltrado = menuStructure.filter(section => {
+    if (userRole === 'ADMIN') return true; 
+    return section.role === userRole || section.id === 'dashboard'; 
+  });
 
   return (
-    <header 
-      className={`shadow-2xl sticky top-0 z-50 border-b border-white/5 w-full transition-colors duration-500 
-      ${userRole === "ADMIN" ? "bg-[#1e293b]" : "bg-[#064e3b]"}`}
-    >
-      <div className="max-w-full mx-auto flex justify-between items-center px-4 md:px-8 h-16 md:h-20">
-
-        {/* LOGO E MENU MOBILE */}
-        <div className="flex items-center gap-3">
-          {/* O botão de menu só aparece se for ADMIN ou se houver mais de uma página para a Role */}
-          {userRole === "ADMIN" && (
-            <button 
-              onClick={() => setMenuAberto(!menuAberto)}
-              className="lg:hidden p-2 text-white"
-            >
-              <div className="w-6 h-0.5 bg-white mb-1.5"></div>
-              <div className="w-6 h-0.5 bg-[#b49157] mb-1.5"></div>
-              <div className="w-4 h-0.5 bg-white"></div>
-            </button>
-          )}
-
-          <div className="flex items-center gap-2 md:gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-[#b49157] flex items-center justify-center text-white font-extrabold text-xs md:text-sm rounded-xl shadow-lg shadow-[#b49157]/20">
-              A
-            </div>
-            <div className="text-left leading-none">
-              <h1 className="text-sm md:text-lg font-black tracking-tighter text-white">ANALU</h1>
-              <p className="hidden xs:block text-[6px] md:text-[8px] text-[#b49157] uppercase tracking-[0.3em] font-black">Executive Suite</p>
-            </div>
+    <header className="sticky top-0 z-50 bg-[#064e3b] border-b border-white/10 shadow-2xl font-sans transition-colors duration-300">
+      <div className="max-w-[1800px] mx-auto px-6 md:px-12 h-20 flex justify-between items-center">
+        <div className="flex items-center gap-4 z-50 cursor-pointer group" onClick={() => handleNavegar('Dashboard')}>
+          <div className="w-10 h-10 bg-[#b49157] rounded-xl flex items-center justify-center text-white font-black text-sm shadow-lg shadow-black/20 border border-white/20 group-hover:scale-105 transition-transform">
+            A
+          </div>
+          <div className="hidden md:block leading-none">
+            <h1 className="text-lg font-black tracking-tighter text-white">ANALU</h1>
+            <p className="text-[9px] text-[#b49157] uppercase tracking-[0.35em] font-bold mt-0.5 group-hover:tracking-[0.45em] transition-all">Executive Portal</p>
           </div>
         </div>
 
-        {/* NAVEGAÇÃO DESKTOP - FILTRADA POR ROLE */}
-        <nav className="hidden lg:flex flex-1 justify-center items-center gap-1 px-4">
-          {userRole === "ADMIN" ? (
-            <>
-              <Botao label="Dashboard" nomePagina="Dashboard" />
-              <Botao label="Produção" nomePagina="Estoque" />
-              <Botao label="Suprimentos" nomePagina="Suprimentos" />
-              <Botao label="Loja" nomePagina="Entregas" />
-              <Botao label="Financeiro" nomePagina="Financeiro" />
-              <Botao label="Equipe" nomePagina="Funcionários" />
-            </>
-          ) : (
-            // Se for LOJA, ele só vê o botão da própria área (ou pode ficar vazio se o App.js já travar a página)
-            <Botao label="Ponto de Venda" nomePagina="Entregas" />
-          )}
+        {/* --- 2. MENU DESKTOP --- */}
+        <nav className="hidden lg:flex items-center gap-16" ref={dropdownRef}>
+          {menuFiltrado.map((section) => (
+            <div key={section.id} className="relative group">
+              <button 
+                onClick={() => toggleDropdown(section.id)}
+                className={`flex items-center gap-3 px-2 py-2 text-[11px] font-bold uppercase tracking-widest transition-all duration-300 relative
+                  ${dropdownAtivo === section.id ? 'text-white' : 'text-emerald-100/60 hover:text-white'}
+                `}
+              >
+                <span className={`transition-colors duration-300 ${dropdownAtivo === section.id ? 'text-[#b49157]' : 'text-emerald-100/40'} ${section.color}`}>
+                  {section.icon}
+                </span>
+                
+                {section.label}
+                
+                <ChevronDown size={12} className={`transition-transform duration-300 opacity-50 ${dropdownAtivo === section.id ? 'rotate-180 text-[#b49157] opacity-100' : ''}`} />
+                
+                {/* Linha Dourada Animada */}
+                <span className={`absolute bottom-0 left-0 h-[2px] bg-[#b49157] transition-all duration-300 ${dropdownAtivo === section.id ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+              </button>
+
+              {/* DROPDOWN MENU LUXURY GLASS */}
+              {dropdownAtivo === section.id && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-5 w-72 bg-[#064e3b]/95 backdrop-blur-xl border border-white/10 border-t-[#b49157] border-t-2 rounded-b-xl rounded-t-sm shadow-2xl overflow-hidden animate-fade-in-down z-50">
+                  <div className="py-2">
+                    <p className="px-5 py-3 text-[9px] font-black text-emerald-100/30 uppercase tracking-widest border-b border-white/5 mb-2">
+                      Módulos de {section.label}
+                    </p>
+                    {section.subItems.map((subItem, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleNavegar(subItem.page)}
+                        className={`w-full text-left px-5 py-3 text-xs font-medium transition-all flex items-center gap-3 group/item
+                          ${paginaAtual === subItem.page 
+                            ? 'bg-white/10 text-[#b49157]' 
+                            : 'text-emerald-100/70 hover:bg-white/5 hover:text-white hover:pl-7'}
+                        `}
+                      >
+                        <span className={paginaAtual === subItem.page ? 'text-[#b49157]' : 'text-emerald-100/40 group-hover/item:text-white'}>
+                          {subItem.icon}
+                        </span>
+                        {subItem.label}
+                        {paginaAtual === subItem.page && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#b49157] shadow-[0_0_8px_#b49157]"></div>}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
         </nav>
 
-        {/* PERFIL E LOGOUT */}
-        <div className="flex items-center gap-3 md:gap-6 ml-4">
-          <div className="hidden xl:flex flex-col text-right border-r border-white/10 pr-6 leading-tight">
-            <p className="text-[8px] font-black uppercase text-[#b49157]">
-              {userRole === "ADMIN" ? "Nível: Administrador" : "Nível: Operacional"}
-            </p>
-            <p className="text-[9px] font-bold text-white/40 uppercase tracking-tighter">
-              {userRole === "ADMIN" ? "Rickman Brown" : "Unidade Comercial"}
-            </p>
+        {/* --- 3. PERFIL & SAIR --- */}
+        <div className="flex items-center gap-8">
+          <div className="hidden xl:flex flex-col text-right leading-tight border-r border-white/10 pr-6">
+            <p className="text-[9px] font-black uppercase text-[#b49157] tracking-wider mb-0.5">{userRole}</p>
+            <p className="text-[10px] font-bold text-emerald-100/80">Rickman Brown</p>
           </div>
 
-          <button
-            onClick={onLogout}
-            className="flex items-center justify-center w-10 h-10 md:w-auto md:px-5 md:py-2 border border-white/10 hover:border-rose-500/50 rounded-xl transition-all group"
+          <button 
+            onClick={onLogout} 
+            className="hidden md:flex items-center gap-2 px-5 py-2.5 bg-black/20 hover:bg-rose-500/20 border border-white/5 hover:border-rose-500/30 rounded-xl group transition-all duration-300"
           >
-            <span className="hidden md:inline text-[10px] font-black uppercase tracking-widest text-white/60 group-hover:text-rose-400">Sair</span>
-            <span className="md:hidden text-white/60 group-hover:text-rose-400 text-lg">✕</span>
+            <LogOut size={14} className="text-emerald-100/50 group-hover:text-rose-400 transition-colors" />
+            <span className="text-[10px] font-black uppercase text-emerald-100/50 group-hover:text-rose-400 transition-colors">Sair</span>
+          </button>
+
+          {/* Botão Hamburger Mobile */}
+          <button 
+            onClick={() => setMenuMobileAberto(!menuMobileAberto)}
+            className="lg:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
+          >
+            {menuMobileAberto ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
-      {/* MENU MOBILE LATERAL */}
-      <div className={`fixed inset-0 z-[60] lg:hidden transition-all duration-500 ${menuAberto ? "visible" : "invisible"}`}>
-        <div 
-          className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${menuAberto ? "opacity-100" : "opacity-0"}`}
-          onClick={() => setMenuAberto(false)}
-        />
-        
-        <div className={`absolute top-0 left-0 w-72 h-full shadow-2xl transition-transform duration-500 flex flex-col p-6 ${menuAberto ? "translate-x-0" : "-translate-x-full"} ${userRole === "ADMIN" ? "bg-[#1e293b]" : "bg-[#064e3b]"}`}>
-          <div className="flex justify-between items-center mb-10">
-            <h2 className="font-black text-[#b49157] tracking-widest uppercase text-xs">Menu Analu</h2>
-            <button onClick={() => setMenuAberto(false)} className="text-white/40 text-xl">✕</button>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            {userRole === "ADMIN" ? (
-              <>
-                <Botao label="Dashboard" nomePagina="Dashboard" mobile />
-                <Botao label="Produção" nomePagina="Estoque" mobile />
-                <Botao label="Suprimentos" nomePagina="Suprimentos" mobile />
-                <Botao label="Loja" nomePagina="Entregas" mobile />
-                <Botao label="Financeiro" nomePagina="Financeiro" mobile />
-                <Botao label="Equipe" nomePagina="Funcionários" mobile />
-              </>
-            ) : (
-              <Botao label="Ponto de Venda" nomePagina="Entregas" mobile />
-            )}
-          </div>
-
-          <div className="mt-auto border-t border-white/10 pt-6">
-            <p className="text-[10px] font-black text-[#b49157] uppercase tracking-widest mb-1">Acesso:</p>
-            <p className="text-sm font-bold text-white uppercase">{userRole}</p>
+      {/* --- 4. MENU MOBILE--- */}
+      <div className={`lg:hidden fixed inset-0 z-40 bg-[#043327]/95 backdrop-blur-xl transition-all duration-300 ${menuMobileAberto ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+        <div className="flex flex-col h-full pt-24 px-6 pb-6 overflow-y-auto">
+          {menuFiltrado.map((section) => (
+            <div key={section.id} className="border-b border-white/5 pb-2 mb-2">
+              <button onClick={() => toggleDropdown(section.id)} className="w-full flex items-center justify-between py-4 text-sm font-black text-white uppercase tracking-wider">
+                <div className="flex items-center gap-3">
+                  <span className={section.color.replace('group-hover:', '')}>{section.icon}</span>
+                  {section.label}
+                </div>
+                <ChevronDown size={16} className={`transition-transform ${dropdownAtivo === section.id ? 'rotate-180 text-[#b49157]' : 'text-emerald-100/40'}`} />
+              </button>
+              
+              <div className={`overflow-hidden transition-all duration-300 ${dropdownAtivo === section.id ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className="pl-4 flex flex-col gap-1 pb-4">
+                  {section.subItems.map((subItem, idx) => (
+                    <button key={idx} onClick={() => handleNavegar(subItem.page)} className={`w-full text-left py-3 text-xs font-bold border-l-2 pl-4 transition-all flex items-center gap-3 ${paginaAtual === subItem.page ? 'border-[#b49157] text-[#b49157]' : 'border-white/10 text-emerald-100/60'}`}>
+                      {subItem.icon}
+                      {subItem.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+          <div className="mt-auto pt-8 border-t border-white/10 flex justify-between items-center">
+             <div><p className="text-white font-bold text-sm">Rickman Brown</p><p className="text-[#b49157] text-xs">{userRole}</p></div>
+             <button onClick={onLogout} className="text-rose-400 text-xs font-black uppercase border border-rose-500/20 px-4 py-2 rounded-lg">Sair</button>
           </div>
         </div>
       </div>
