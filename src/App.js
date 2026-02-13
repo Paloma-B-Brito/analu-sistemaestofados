@@ -14,6 +14,14 @@ import GestaoInsumos from "./pages/GestaoInsumos";
 import AreaLoja from "./pages/AreaLoja";
 import Financeiro from "./pages/Financeiro";
 import Clientes from './pages/Clientes';
+import Relatorios from './pages/Relatorios';
+import Qualidade from './pages/Qualidade';
+import Manutencao from './pages/Manutencao';
+import Pedidos from './pages/Pedidos';
+import FluxoCaixa from './pages/FluxoCaixa';
+import DRE from './pages/DRE';
+import Contas from './pages/Contas';
+
 
 function App() {
   const [logado, setLogado] = useState(false);
