@@ -29,7 +29,7 @@ function ModalSaidaProdutoEstofado({ onClose }) {
 
       <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden animate-slide-up border border-emerald-50">
         
-        {/* HEADER LOGÍSTICO SLIM */}
+        {/* HEADER LOGÍSTICO*/}
         <div className="bg-[#064e3b] px-6 py-4 text-white flex justify-between items-center">
           <div className="text-left">
             <p className="text-[8px] font-black uppercase tracking-[0.4em] text-[#b49157]">Logistics Protocol</p>
@@ -43,7 +43,7 @@ function ModalSaidaProdutoEstofado({ onClose }) {
             <h3 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Doca de Saída (Unidade 01)</h3>
           </div>
           
-          {/* LISTAGEM DE ITENS COMPACTA */}
+          {/* LISTAGEM DE ITENS */}
           <div className="space-y-2 max-h-[250px] overflow-y-auto custom-scrollbar">
             {prontosParaEnvio.map((item) => (
               <div 
@@ -55,7 +55,7 @@ function ModalSaidaProdutoEstofado({ onClose }) {
                   : 'border-slate-100 bg-white hover:border-[#b49157]/30'
                 }`}
               >
-                {/* CHECKBOX MINIMALISTA */}
+                {/* CHECKBOX */}
                 <div className={`w-6 h-6 rounded-lg flex items-center justify-center border-2 transition-all ${
                   item.selecionado ? 'bg-[#064e3b] border-[#064e3b] text-white' : 'border-slate-100 bg-slate-50'
                 }`}>
@@ -73,7 +73,7 @@ function ModalSaidaProdutoEstofado({ onClose }) {
             ))}
           </div>
 
-          {/* MANIFESTO DE CARGA SLIM */}
+          {/* MANIFESTO DE CARGA */}
           <div className="bg-slate-900 p-4 rounded-2xl flex justify-between items-center shadow-inner relative overflow-hidden">
             <div className="absolute right-0 top-0 w-16 h-16 bg-[#b49157]/10 rounded-full blur-2xl"></div>
             <div className="text-left relative z-10">

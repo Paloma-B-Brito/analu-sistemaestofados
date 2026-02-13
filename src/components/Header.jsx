@@ -1,6 +1,6 @@
 /**
  * @file Header.jsx
- * @description Navegação ERP Enterprise - Identidade Visual Green & Gold
+ * @description Navegação ERP Enterprise 
  * @author © 2026 Rickman Brown • Software Engineering
  */
 
@@ -129,12 +129,8 @@ function Header({ paginaAtual, setPagina, onLogout, userRole }) {
                 {section.label}
                 
                 <ChevronDown size={12} className={`transition-transform duration-300 opacity-50 ${dropdownAtivo === section.id ? 'rotate-180 text-[#b49157] opacity-100' : ''}`} />
-                
-                {/* Linha Dourada Animada */}
                 <span className={`absolute bottom-0 left-0 h-[2px] bg-[#b49157] transition-all duration-300 ${dropdownAtivo === section.id ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
               </button>
-
-              {/* DROPDOWN MENU LUXURY GLASS */}
               {dropdownAtivo === section.id && (
                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-5 w-72 bg-[#064e3b]/95 backdrop-blur-xl border border-white/10 border-t-[#b49157] border-t-2 rounded-b-xl rounded-t-sm shadow-2xl overflow-hidden animate-fade-in-down z-50">
                   <div className="py-2">
@@ -179,8 +175,6 @@ function Header({ paginaAtual, setPagina, onLogout, userRole }) {
             <LogOut size={14} className="text-emerald-100/50 group-hover:text-rose-400 transition-colors" />
             <span className="text-[10px] font-black uppercase text-emerald-100/50 group-hover:text-rose-400 transition-colors">Sair</span>
           </button>
-
-          {/* Botão Hamburger Mobile */}
           <button 
             onClick={() => setMenuMobileAberto(!menuMobileAberto)}
             className="lg:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors"

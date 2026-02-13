@@ -1,6 +1,6 @@
 /**
  * @file ModalAdicionarMaterial.jsx
- * @description Registro de Insumos - Layout Padronizado Rickman Brown
+ * @description Registro de Insumos 
  * @author © 2026 — Rickman Brown • Software Engineering
  */
 
@@ -27,17 +27,11 @@ function ModalAdicionarMaterial({ onClose, onSalvar }) {
 
   return (
     <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 font-sans">
-      
-      {/* OVERLAY EXECUTIVO COM BLUR PROFUNDO */}
       <div 
         className="absolute inset-0 bg-[#064e3b]/85 backdrop-blur-md transition-opacity duration-300" 
         onClick={onClose}
       ></div>
-
-      {/* CONTAINER MODAL PADRONIZADO (IDENTICO AO DE ESTOFADOS) */}
       <div className="relative bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden border border-emerald-50/20 flex flex-col scale-100 transition-all">
-        
-        {/* HEADER SUPPLY CHAIN */}
         <div className="bg-[#064e3b] p-6 text-white flex justify-between items-center shrink-0 border-b border-white/5">
           <div className="text-left">
             <p className="text-[9px] font-black uppercase tracking-[0.4em] text-[#b49157] mb-0.5">Supply Chain</p>
@@ -52,7 +46,7 @@ function ModalAdicionarMaterial({ onClose, onSalvar }) {
           </button>
         </div>
 
-        {/* FORMULÁRIO TÉCNICO PADRONIZADO */}
+        {/* FORMULÁRIO TÉCNICO */}
         <form onSubmit={handleSubmit} className="p-7 space-y-5 bg-white">
           
           {/* ESPECIFICAÇÃO DO MATERIAL */}
@@ -103,7 +97,7 @@ function ModalAdicionarMaterial({ onClose, onSalvar }) {
             </div>
           </div>
 
-          {/* DASHBOARD FINANCEIRO (QTD VS CUSTO) - IGUAL AO DE PRODUTOS */}
+          {/* DASHBOARD FINANCEIRO */}
           <div className="grid grid-cols-2 gap-4 p-5 bg-slate-900 rounded-[2rem] shadow-inner relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-[#b49157]/10 to-transparent pointer-events-none"></div>
             

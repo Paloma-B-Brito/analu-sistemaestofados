@@ -36,7 +36,7 @@ function ModalPerdaProducao({ onClose }) {
 
       <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden animate-slide-up border border-rose-50 flex flex-col">
         
-        {/* HEADER DE INCIDENTE SLIM */}
+        {/* HEADER DE INCIDENTE */}
         <div className="bg-[#8b0000] px-6 py-4 text-white flex justify-between items-center">
           <div className="text-left">
             <p className="text-[8px] font-black uppercase tracking-[0.4em] text-rose-300">Quality Control</p>
@@ -95,7 +95,7 @@ function ModalPerdaProducao({ onClose }) {
             ></textarea>
           </div>
 
-          {/* PROTOCOLO DE DESTINO - COMPACTO */}
+          {/* PROTOCOLO DE DESTINO*/}
           <div className="flex gap-2">
             {[
               { id: "Manutenção", label: "🛠️ Recuperar" },
@@ -124,7 +124,7 @@ function ModalPerdaProducao({ onClose }) {
           </button>
         </form>
 
-        {/* FOOTER AUDIT DISCRETO */}
+        {/* FOOTER AUDIT*/}
         <div className="bg-rose-50/30 py-2 border-t border-rose-100">
           <p className="text-[7px] font-black text-rose-400 uppercase tracking-[0.4em] text-center">
             Quality Unit • Rickman Brown Engineering

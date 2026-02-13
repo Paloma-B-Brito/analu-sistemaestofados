@@ -1,6 +1,6 @@
 /**
  * @file ModalEntradaMateriaPrima.jsx
- * @description Controle de Entrada - Versão Ultra-Compacta
+ * @description Controle de Entrada
  * @author © 2026 Rickman Brown • Software Engineering
  */
 
@@ -29,12 +29,10 @@ function ModalEntradaMateriaPrima({ onClose }) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 font-sans">
-      {/* OVERLAY COM BLUR */}
       <div className="absolute inset-0 bg-[#064e3b]/60 backdrop-blur-sm animate-fade-in" onClick={onClose}></div>
-
       <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden animate-slide-up border border-emerald-50">
         
-        {/* HEADER COMPACTO */}
+        {/* HEADER */}
         <div className="bg-[#064e3b] px-6 py-4 text-white flex justify-between items-center">
           <div className="text-left">
             <p className="text-[8px] font-black uppercase tracking-[0.4em] text-[#b49157]">Inventory Protocol</p>
@@ -45,7 +43,7 @@ function ModalEntradaMateriaPrima({ onClose }) {
 
         <div className="p-6 space-y-4">
           
-          {/* SELEÇÃO DE TIPO (HORIZONTAL) */}
+          {/* SELEÇÃO DE TIPO */}
           <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
             {tiposInsumo.map(t => (
               <button

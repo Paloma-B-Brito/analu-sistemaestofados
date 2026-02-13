@@ -125,7 +125,7 @@ function EstoqueFabrica({ userRole }) {
                   </div>
                 </div>
 
-                {/* DADOS FINANCEIROS (BLINDADO: Só ADMIN vê) */}
+                {/* DADOS FINANCEIROS ( Só ADMIN vê) */}
                 {userRole === 'ADMIN' && abaAtiva === "PRODUCAO" && (
                   <div className="hidden md:block text-right border-l pl-6 min-w-[120px]">
                     <p className="text-[8px] font-black text-slate-400 uppercase">Custo Unit.</p>

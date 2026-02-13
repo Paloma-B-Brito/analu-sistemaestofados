@@ -7,7 +7,6 @@
 import { useState } from "react";
 import '../../App.css';
 
-// Adicionamos as props: estoqueDisponivel e onFinalizarVenda
 function ModalSaidaProdutoVenda({ onClose, estoqueDisponivel = [], onFinalizarVenda }) {
   const [venda, setVenda] = useState({
     tipoItem: "Estofado",
@@ -28,7 +27,7 @@ function ModalSaidaProdutoVenda({ onClose, estoqueDisponivel = [], onFinalizarVe
 
       <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden animate-slide-up border border-emerald-50">
         
-        {/* HEADER EXECUTIVO SLIM */}
+        {/* HEADER EXECUTIVO*/}
         <div className="bg-[#064e3b] px-6 py-4 text-white flex justify-between items-center">
           <div className="text-left">
             <p className="text-[8px] font-black uppercase tracking-[0.4em] text-[#b49157]">Executive POS</p>
@@ -79,7 +78,7 @@ function ModalSaidaProdutoVenda({ onClose, estoqueDisponivel = [], onFinalizarVe
             </select>
           </div>
 
-          {/* PAINEL FINANCEIRO DARK COMPACTO */}
+          {/* PAINEL FINANCEIRO */}
           <div className="bg-slate-900 rounded-[1.5rem] p-4 text-white shadow-inner space-y-3">
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -124,7 +123,7 @@ function ModalSaidaProdutoVenda({ onClose, estoqueDisponivel = [], onFinalizarVe
             disabled={venda.valorBase === 0 || !venda.produto}
             className="w-full py-4 bg-[#b49157] hover:bg-[#d4ae6d] disabled:bg-slate-100 disabled:text-slate-300 text-white rounded-xl font-black uppercase tracking-[0.2em] shadow-lg transition-all text-[9px] active:scale-95"
             onClick={() => {
-              onFinalizarVenda(venda); // Chama a função que enviamos do Dashboard
+              onFinalizarVenda(venda);
             }}
           >
             Finalizar e Gerar Recibo

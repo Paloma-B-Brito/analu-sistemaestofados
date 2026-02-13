@@ -4,7 +4,7 @@ function ModalNovoEstofado({ onClose, onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     modelo: "",
-    status: "EM_PRODUCAO", // Padrão ao criar
+    status: "EM_PRODUCAO",
     valor: "",
     custo: ""
   });
@@ -14,7 +14,6 @@ function ModalNovoEstofado({ onClose, onSuccess }) {
   };
 
   const salvarNoBanco = async () => {
-    // Validação simples
     if (!formData.modelo || !formData.valor) return alert("Preencha os campos obrigatórios!");
 
     setLoading(true);
@@ -27,15 +26,15 @@ function ModalNovoEstofado({ onClose, onSuccess }) {
         body: JSON.stringify({
           modelo: formData.modelo,
           status: formData.status,
-          valor: parseFloat(formData.valor), // Converte texto para número
+          valor: parseFloat(formData.valor),
           custo: parseFloat(formData.custo)
         })
       });
 
       if (response.ok) {
         alert("✅ Estofado cadastrado com sucesso!");
-        if (onSuccess) onSuccess(); // Atualiza o Dashboard
-        onClose(); // Fecha o modal
+        if (onSuccess) onSuccess();
+        onClose(); 
       } else {
         alert("Erro ao salvar no sistema.");
       }

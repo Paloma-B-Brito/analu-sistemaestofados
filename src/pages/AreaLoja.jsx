@@ -29,7 +29,6 @@ function AreaLoja({ userRole }) {
   const [dadosVenda, setDadosVenda] = useState({ vendedor: "", pagamento: "" });
   const [filtroDataImpressao, setFiltroDataImpressao] = useState(new Date().toISOString().split('T')[0]);
 
-  // Bloqueio de Scroll para sensação de App Nativo
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = "unset"; };
@@ -146,8 +145,6 @@ function AreaLoja({ userRole }) {
                     </span>
                     
                     <h3 className="text-lg font-black text-[#064e3b] uppercase leading-tight mt-1">{p.modelo}</h3>
-                    
-                    {/* VISÃO SIMPLIFICADA PARA LOJA: Esconde detalhes técnicos de acabamento se preferir, ou mostra status amigável */}
                     <p className="text-[10px] font-bold text-slate-400 uppercase mt-1">
                       {userRole === 'ADMIN' ? p.acabamento : "✨ Disponível para Entrega Imediata"}
                     </p>

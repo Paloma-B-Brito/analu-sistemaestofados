@@ -1,6 +1,6 @@
 /**
  * @file ModalConsultaGeral.jsx
- * @description Central de Busca Inteligente (Slim & Focused)
+ * @description Central de Busca 
  * @author © 2026 — Rickman Brown
  */
 
@@ -40,7 +40,7 @@ function ModalConsultaGeral({ onClose }) {
 
       <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-2xl overflow-hidden animate-slide-up border border-emerald-50 flex flex-col max-h-[85vh]">
         
-        {/* BUSCA PREMIUM SLIM */}
+        {/* BUSCA */}
         <div className="p-5 bg-white border-b border-slate-50">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-8 bg-[#064e3b] rounded-xl flex items-center justify-center text-[#b49157] font-black text-[10px]">A</div>
@@ -67,7 +67,7 @@ function ModalConsultaGeral({ onClose }) {
           </div>
         </div>
 
-        {/* LISTAGEM OTIMIZADA */}
+        {/* LISTAGEM */}
         <div className="overflow-y-auto flex-1 p-4 space-y-2 bg-slate-50/30 custom-scrollbar">
           {resultados.length > 0 ? (
             resultados.map((item) => (
@@ -131,7 +131,7 @@ function ModalConsultaGeral({ onClose }) {
           )}
         </div>
 
-        {/* FOOTER BLACK SLIM */}
+        {/* FOOTER */}
         <div className="bg-slate-900 px-6 py-3 flex justify-between items-center">
           <p className="text-[6px] font-black text-white/20 uppercase tracking-[0.5em]">Real-Time Engine • ANALU</p>
           <div className="flex gap-1.5">

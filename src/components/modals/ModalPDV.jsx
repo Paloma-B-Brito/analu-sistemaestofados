@@ -92,7 +92,7 @@ function ModalPDV({ onClose, estoqueDisponivel = [], onFinalizarVenda }) {
                 </select>
               </div>
 
-              {/* RECIBO DARK SLIM */}
+              {/* RECIBO*/}
               <div className="bg-slate-900 p-6 rounded-[2rem] text-white relative overflow-hidden">
                 <div className="flex justify-between items-end">
                   <div>

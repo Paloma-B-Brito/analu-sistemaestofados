@@ -1,6 +1,6 @@
 /**
  * @file Card.jsx
- * @description Componente de Card Resumido com Indicadores Visuais e Animações Suaves
+ * @description Componente de Card com Indicadores Visuais e Animações Suaves
  * @author © 2026 Rickman Brown • Software Engineering
  */
 

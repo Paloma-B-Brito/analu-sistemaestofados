@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import "../App.css";
 
-// --- DADOS INICIAIS (MOCK) ---
 const catalogoInicial = [
   { id: "MOD-CH-01", nome: "Sofá Chesterfield 3 Lug", materiais: [{ item: "Couro Legítimo", qtd: 15, vlr: 120 }, { item: "Madeira Eucalipto", qtd: 0.8, vlr: 850 }, { item: "Espuma D33 Soft", qtd: 4, vlr: 150 }, { item: "Molas e Percintas", qtd: 1, vlr: 220 }], maoDeObra: 650, custoFixoRateio: 150 },
   { id: "MOD-EAM-02", nome: "Poltrona Charles Eames", materiais: [{ item: "Couro Natural", qtd: 4, vlr: 120 }, { item: "Lâmina Pau-Ferro", qtd: 1, vlr: 750 }, { item: "Base Alumínio", qtd: 1, vlr: 420 }, { item: "Espuma Injetada", qtd: 2, vlr: 180 }], maoDeObra: 450, custoFixoRateio: 100 },
@@ -22,7 +21,7 @@ function FinanceiroEditavel() {
   const [produtos, setProdutos] = useState(catalogoInicial);
   const [idAtivo, setIdAtivo] = useState(catalogoInicial[0].id);
   const [pagina, setPagina] = useState(1);
-  const [portalAberto, setPortalAberto] = useState(false); // Controle do Portal Admin
+  const [portalAberto, setPortalAberto] = useState(false); 
   const itensPorPagina = 4;
 
   useEffect(() => {
