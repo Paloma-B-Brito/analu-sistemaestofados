@@ -1,6 +1,6 @@
 /**
  * @file Header.jsx
- * @description Navegação ERP Enterprise 
+ * @description Navegação ERP Enterprise
  * @author © 2026 Rickman Brown • Software Engineering
  */
 
@@ -23,7 +23,7 @@ const menuStructure = [
     role: 'ADMIN',
     subItems: [
       { label: 'Visão Geral (Real-Time)', page: 'Dashboard', icon: <Activity size={14} /> },
-      { label: 'Indicadores (KPIs)', page: 'Dashboard', icon: <PieChart size={14} /> },
+      { label: 'Indicadores (KPIs)', page: 'KPIs', icon: <PieChart size={14} /> },
       { label: 'Relatórios Gerenciais', page: 'Relatorios', icon: <FileText size={14} /> }
     ]
   },
