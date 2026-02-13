@@ -5,8 +5,8 @@
  */
 
 import { useState } from "react";
-import "../../app.css";
-import ModalAdicionarMaterial from "../components/modals/ModalAdicionarMaterial";
+import "../../App.css";
+import ModalAdicionarMaterial from "../../components/modals/ModalAdicionarMaterial";
 
 const mockInsumos = [
   { id: "INS-TEC-01", material: "Tecido Linho Europeu", unidade: "m", quantidade: 150, estoqueMinimo: 50, custoUnidade: 45.00, consumoPorEstofado: 8.5, categoria: "Têxtil" },

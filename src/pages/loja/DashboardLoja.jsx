@@ -4,7 +4,7 @@ function DashboardLoja() {
   return (
     <div className="animate-fade-in space-y-6">
       <h1 className="text-2xl font-black text-[#064e3b] uppercase">
-        Visão Geral • <span className="text-rose-500">Loja & Showroom</span>
+        Visão Geral • <span className="text-rose-500">Loja</span>
       </h1>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
