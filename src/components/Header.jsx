@@ -7,10 +7,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   ChevronDown, Menu, X, LogOut, 
-  BarChart2, PieChart, Activity, // Dashboard
-  Factory, Package, Wrench, ClipboardList, Truck, // Fábrica
-  ShoppingBag, Users, CreditCard, Tag, // Loja
-  DollarSign, TrendingUp, FileText, Wallet // Financeiro
+  BarChart2, PieChart, Activity,
+  Factory, Package, Wrench, ClipboardList, Truck,
+  ShoppingBag, Users, CreditCard, Tag, 
+  DollarSign, TrendingUp, FileText, Wallet,
+  LayoutDashboard 
 } from 'lucide-react';
 
 // --- ESTRUTURA DO ERP ---
@@ -34,6 +35,7 @@ const menuStructure = [
     color: 'group-hover:text-blue-300',
     role: 'FABRICA', 
     subItems: [
+      { label: 'Dashboard Fábrica', page: 'DashboardFabrica', icon: <LayoutDashboard size={14} /> },
       { label: 'Linha de Produção (PCP)', page: 'Estoque', icon: <Factory size={14} /> },
       { label: 'Estoque de Matéria-Prima', page: 'Suprimentos', icon: <Package size={14} /> },
       { label: 'Controle de Qualidade', page: 'Qualidade', icon: <ClipboardList size={14} /> },
@@ -47,6 +49,7 @@ const menuStructure = [
     color: 'group-hover:text-rose-300',
     role: 'LOJA',
     subItems: [
+      { label: 'Dashboard Loja', page: 'DashboardLoja', icon: <LayoutDashboard size={14} /> },
       { label: 'Showroom Digital', page: 'Loja', icon: <Tag size={14} /> },
       { label: 'PDV (Frente de Caixa)', page: 'PDV', icon: <CreditCard size={14} /> },
       { label: 'Gestão de Pedidos', page: 'Pedidos', icon: <ClipboardList size={14} /> },
@@ -61,6 +64,7 @@ const menuStructure = [
     color: 'group-hover:text-[#b49157]',
     role: 'ADMIN',
     subItems: [
+      { label: 'Dashboard Financeiro', page: 'DashboardFinanceiro', icon: <LayoutDashboard size={14} /> },
       { label: 'Engenharia de Custos', page: 'Financeiro', icon: <Wrench size={14} /> },
       { label: 'Fluxo de Caixa', page: 'FluxoCaixa', icon: <TrendingUp size={14} /> },
       { label: 'DRE Gerencial', page: 'DRE', icon: <FileText size={14} /> },

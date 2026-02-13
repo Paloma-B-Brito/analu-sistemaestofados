@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-import "../App.css";
+import "./src/App.css";
 
 const catalogoInicial = [
   { id: "MOD-CH-01", nome: "Sofá Chesterfield 3 Lug", materiais: [{ item: "Couro Legítimo", qtd: 15, vlr: 120 }, { item: "Madeira Eucalipto", qtd: 0.8, vlr: 850 }, { item: "Espuma D33 Soft", qtd: 4, vlr: 150 }, { item: "Molas e Percintas", qtd: 1, vlr: 220 }], maoDeObra: 650, custoFixoRateio: 150 },

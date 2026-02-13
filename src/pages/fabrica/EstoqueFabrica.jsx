@@ -6,6 +6,7 @@
 
 import { useState } from "react";
 
+
 const mockEstofadosFabrica = [
   { id: "FAB-CH-001", modelo: "Sofá Chesterfield 3L", cliente: "Showroom", responsavel: "Mestre Ricardo", progresso: 65, status: "EM ANDAMENTO", materiais: "Couro Legítimo / Espuma D33", detalhes: "Estrutura Concluída", custoProducao: 3100.00, valorMercado: 8500.00 },
   { id: "FAB-EAM-042", modelo: "Poltrona Charles Eames", cliente: "VIP #982", responsavel: "Marcenaria", progresso: 100, status: "PRONTO", materiais: "Pau-Ferro / Couro", detalhes: "Finalizado", custoProducao: 1550.00, valorMercado: 4200.00 },

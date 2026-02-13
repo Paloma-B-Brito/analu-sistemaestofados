@@ -1,6 +1,6 @@
 /**
  * @file App.js
- * @description Core da Aplicação - Roteamento Inteligente e Gestão de Módulos
+ * @description Core da Aplicação - Estrutura Modular Organizada
  * @author © 2026 Rickman Brown • Software Engineering
  */
 
@@ -10,27 +10,32 @@ import { useState, useEffect } from "react";
 import Login from "./pages/Login"; 
 import Header from "./components/Header";
 
-// --- 2. PÁGINAS (MÓDULOS) ---
+// --- 2. PÁGINAS GERAIS (ADMIN) ---
 import Dashboard from "./pages/Dashboard";
 import KPIs from "./pages/KPIs";             
-import Relatorios from './pages/Relatorios'; 
-
-import EstoqueFabrica from "./pages/EstoqueFabrica";
-import GestaoInsumos from "./pages/GestaoInsumos";
-import Qualidade from './pages/Qualidade';   
-import Manutencao from './pages/Manutencao'; 
-
-import AreaLoja from "./pages/AreaLoja";     
-import PDV from "./pages/PDV";               
-import Pedidos from './pages/Pedidos';       
-import Clientes from './pages/Clientes';     
-
-import Financeiro from "./pages/Financeiro";
-import FluxoCaixa from './pages/FluxoCaixa'; 
-import DRE from './pages/DRE';              
-import Contas from './pages/Contas';         
-
+import Relatorios from './pages/Relatorios';
 import Funcionarios from "./pages/Funcionários"; 
+
+// --- 3. MÓDULO FÁBRICA ---
+import DashboardFabrica from './pages/fabrica/DashboardFabrica';
+import EstoqueFabrica from "./pages/fabrica/EstoqueFabrica";
+import GestaoInsumos from "./pages/fabrica/GestaoInsumos";
+import Qualidade from './pages/fabrica/Qualidade';   
+import Manutencao from './pages/fabrica/Manutencao'; 
+
+// --- 4. MÓDULO LOJA ---
+import DashboardLoja from './pages/loja/DashboardLoja';
+import AreaLoja from "./pages/loja/AreaLoja";     
+import PDV from "./pages/loja/PDV";               
+import Pedidos from './pages/loja/Pedidos';       
+import Clientes from './pages/loja/Clientes';     
+
+// --- 5. MÓDULO FINANCEIRO ---
+import DashboardFinanceiro from './pages/financeiro/DashboardFinanceiro';
+import Financeiro from "./pages/financeiro/Financeiro";
+import FluxoCaixa from './pages/financeiro/FluxoCaixa'; 
+import DRE from './pages/financeiro/DRE';              
+import Contas from './pages/financeiro/Contas';         
 
 function App() {
   const [logado, setLogado] = useState(false);
@@ -73,7 +78,6 @@ function App() {
 
   /**
    * MOTOR DE RENDERIZAÇÃO (ROUTER)
-   * Decide qual componente mostrar na tela central
    */
   function renderizarPagina() {
     
@@ -81,10 +85,11 @@ function App() {
     if (role === "LOJA") {
       switch (pagina) {
         case "Loja": return <AreaLoja userRole={role} />; 
-        case "PDV": return <PDV />;                      
+        case "PDV": return <PDV />;                       
         case "Pedidos": return <Pedidos />;               
         case "Clientes": return <Clientes />;             
         case "Entregas": return <AreaLoja userRole={role} />; 
+        case "DashboardLoja": return <DashboardLoja />; 
         default: return <AreaLoja userRole={role} />;
       }
     }
@@ -96,6 +101,7 @@ function App() {
         case "Suprimentos": return <GestaoInsumos />;
         case "Qualidade": return <Qualidade />;
         case "Manutencao": return <Manutencao />;
+        case "DashboardFabrica": return <DashboardFabrica />; 
         default: return <EstoqueFabrica userRole={role} />;
       }
     }
@@ -103,18 +109,20 @@ function App() {
     // --- 3. VISÃO DO CEO/ADMIN (ACESSO TOTAL) ---
     switch (pagina) {
       
-      // === MÓDULO DASHBOARD ===
+      // === MÓDULO DASHBOARD GERAL ===
       case "Dashboard": return <Dashboard />;
       case "KPIs": return <KPIs />;
       case "Relatorios": return <Relatorios />;
 
       // === MÓDULO FÁBRICA ===
+      case "DashboardFabrica": return <DashboardFabrica />;
       case "Estoque": return <EstoqueFabrica userRole={role} />;
       case "Suprimentos": return <GestaoInsumos />;
       case "Qualidade": return <Qualidade />;
       case "Manutencao": return <Manutencao />;
 
       // === MÓDULO LOJA ===
+      case "DashboardLoja": return <DashboardLoja />;
       case "Loja": return <AreaLoja userRole={role} />;
       case "PDV": return <PDV />;
       case "Pedidos": return <Pedidos />;
@@ -122,7 +130,8 @@ function App() {
       case "Entregas": return <AreaLoja userRole={role} />;
 
       // === MÓDULO FINANCEIRO ===
-      case "Financeiro": return <Financeiro />;
+      case "DashboardFinanceiro": return <DashboardFinanceiro />;
+      case "Financeiro": return <Financeiro />; // Engenharia de Custos
       case "FluxoCaixa": return <FluxoCaixa />;
       case "DRE": return <DRE />;
       case "Contas": return <Contas />;
@@ -144,7 +153,6 @@ function App() {
         onLogout={handleLogout}
       />
 
-      {/* Container Principal Dinâmico */}
       <main className="flex-1 w-full max-w-[1920px] mx-auto p-4 md:p-6 animate-fade-in relative">
         {renderizarPagina()}
       </main>

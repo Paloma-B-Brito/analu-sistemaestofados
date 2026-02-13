@@ -5,7 +5,7 @@
  */
 
 import { useState } from "react";
-import "../App.css";
+import "../../app.css";
 import ModalAdicionarMaterial from "../components/modals/ModalAdicionarMaterial";
 
 const mockInsumos = [
