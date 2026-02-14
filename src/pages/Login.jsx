@@ -1,7 +1,7 @@
 /**
  * @file Login.jsx
  * @description Sistema de Autenticação Integrado
- * @author © 2026 Rickman Brown • Software Engineering
+ * @author © 2026 Minister Noiret • Software Engineering
  */
 
 import { useState } from "react";
@@ -34,7 +34,7 @@ function Login({ onLogin }) {
           "Content-Type": "application/json",
           "Accept": "application/json"
         },
-        // Mapeado exatamente para o seu LoginRequestDTO.java
+        // Mapeado exatamente para o LoginRequestDTO.java
         body: JSON.stringify({ 
           login: usuario, 
           senha: senha 
@@ -80,7 +80,7 @@ function Login({ onLogin }) {
               <span className="text-[#b49157] text-2xl sm:text-3xl font-black italic">A</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#064e3b] tracking-tighter uppercase leading-none">
-            Analu Suite
+            Analu System
           </h1>
           <p className="text-[9px] text-[#b49157] uppercase tracking-[0.4em] font-black mt-3 opacity-80">
             Executive Intelligence System
@@ -158,9 +158,9 @@ function Login({ onLogin }) {
 
         <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-50 text-center relative">
           <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.5em]">
-            Protocolo de Segurança Ativo v3.0
+            Protocolo de Segurança
           </p>
-          <p className="text-[7px] font-bold text-slate-200 uppercase mt-2">© 2026 Rickman Brown</p>
+          <p className="text-[7px] font-bold text-slate-200 uppercase mt-2">© 2026 Minister Noiret</p>
         </div>
       </div>
     </div>

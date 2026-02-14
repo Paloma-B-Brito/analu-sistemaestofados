@@ -1,7 +1,7 @@
 /**
  * @file App.js
  * @description Core da Aplicação - Roteamento Inteligente e Gestão de Módulos
- * @author © 2026 Rickman Brown • Software Engineering
+ * @author © 2026 Minister Noiret • Software Engineering
  */
 
 import { useState, useEffect } from "react";
@@ -129,11 +129,11 @@ function App() {
       case "PDV": return <PDV />;
       case "Pedidos": return <Pedidos />;
       case "Clientes": return <Clientes />;
-      case "Entregas": return <Entregas />; // <--- CORRIGIDO: Agora aponta para Entregas.jsx
+      case "Entregas": return <Entregas />;
 
       // === MÓDULO FINANCEIRO ===
       case "DashboardFinanceiro": return <DashboardFinanceiro />;
-      case "Financeiro": return <Financeiro />; // Engenharia de Custos
+      case "Financeiro": return <Financeiro />; 
       case "FluxoCaixa": return <FluxoCaixa />;
       case "DRE": return <DRE />;
       case "Contas": return <Contas />;
@@ -162,7 +162,7 @@ function App() {
 
       <footer className="p-4 text-center border-t border-slate-100 bg-white mt-auto">
         <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">
-          Analu Executive Suite • Nível de Acesso: <span className="text-[#b49157] font-bold">{role}</span> • © 2026 Rickman Brown
+          Analu Executive Suite • Nível de Acesso: <span className="text-[#b49157] font-bold">{role}</span> • © 2026 Minister Noiret
         </p>
       </footer>
     </div>

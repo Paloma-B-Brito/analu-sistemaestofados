@@ -1,7 +1,7 @@
 /**
  * @file KPIs.jsx
  * @description Sala de Guerra - Indicadores Estratégicos de Performance
- * @author © 2026 Rickman Brown
+ * @author © 2026 Minister Noiret • Software Engineering
  */
 
 import React from 'react';
