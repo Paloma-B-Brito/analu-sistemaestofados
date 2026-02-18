@@ -11,7 +11,7 @@ import {
   Factory, Package, Wrench, ClipboardList, Truck,
   ShoppingBag, Users, CreditCard, Tag, 
   DollarSign, TrendingUp, FileText, Wallet,
-  LayoutDashboard 
+  LayoutDashboard, Ruler 
 } from 'lucide-react';
 
 // --- ESTRUTURA DO ERP ---
@@ -36,6 +36,7 @@ const menuStructure = [
     role: 'FABRICA', 
     subItems: [
       { label: 'Dashboard Fábrica', page: 'DashboardFabrica', icon: <LayoutDashboard size={14} /> },
+      { label: 'Engenharia de Produto', page: 'Engenharia', icon: <Ruler size={14} /> },
       { label: 'Linha de Produção (PCP)', page: 'Estoque', icon: <Factory size={14} /> },
       { label: 'Estoque de Matéria-Prima', page: 'Suprimentos', icon: <Package size={14} /> },
       { label: 'Controle de Qualidade', page: 'Qualidade', icon: <ClipboardList size={14} /> },
@@ -169,7 +170,8 @@ function Header({ paginaAtual, setPagina, onLogout, userRole }) {
         <div className="flex items-center gap-8">
           <div className="hidden xl:flex flex-col text-right leading-tight border-r border-white/10 pr-6">
             <p className="text-[9px] font-black uppercase text-[#b49157] tracking-wider mb-0.5">{userRole}</p>
-            <p className="text-[10px] font-bold text-emerald-100/80">Rickman Brown</p>
+            {/* Atualizado para Minister Noiret */}
+            <p className="text-[10px] font-bold text-emerald-100/80">Minister Noiret</p>
           </div>
 
           <button 
@@ -214,7 +216,7 @@ function Header({ paginaAtual, setPagina, onLogout, userRole }) {
             </div>
           ))}
           <div className="mt-auto pt-8 border-t border-white/10 flex justify-between items-center">
-             <div><p className="text-white font-bold text-sm">Rickman Brown</p><p className="text-[#b49157] text-xs">{userRole}</p></div>
+             <div><p className="text-white font-bold text-sm">Minister Noiret</p><p className="text-[#b49157] text-xs">{userRole}</p></div>
              <button onClick={onLogout} className="text-rose-400 text-xs font-black uppercase border border-rose-500/20 px-4 py-2 rounded-lg">Sair</button>
           </div>
         </div>
