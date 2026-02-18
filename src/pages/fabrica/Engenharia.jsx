@@ -1,6 +1,6 @@
 /**
  * @file Engenharia.jsx
- * @description Otimização de Corte, Ficha Técnica Detalhada e Engenharia de Produto
+ * @description Otimização de Corte, Ficha Técnica Detalhada e Engenharia de Produto 
  * @author © 2026 Minister Noiret • Software Architecture
  */
 
@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { 
   Ruler, Scissors, Calculator, Layers, 
   Save, AlertTriangle, CheckCircle, Package, ArrowRight, 
-  ChevronDown, ChevronUp, FileText, Database
+  ChevronDown, ChevronUp, FileText, Database, Edit, Trash, Plus, X
 } from 'lucide-react';
 
 const modelosIniciais = [
@@ -52,7 +52,7 @@ const modelosIniciais = [
     nome: "Puff Feijão (Bean Bag)", 
     dimensoes: "90cm diâmetro",
     materiais: [
-      { tipo: "Isopor Triturado (Pérolas)", consumo: 250, unidade: "litros" },
+      { tipo: "Isopor Triturado (Pérolas)", consumo: 250, unidade: "litros" }, 
       { tipo: "Tecido Lona/Nylon", consumo: 3.5, unidade: "metros" },
       { tipo: "Zíper Reforçado", consumo: 1, unidade: "metro" },
       { tipo: "Linha Nylon", consumo: 80, unidade: "metros" },
@@ -99,10 +99,11 @@ const modelosIniciais = [
 ];
 
 function Engenharia() {
+  const [modelos, setModelos] = useState(modelosIniciais);
   const [producao, setProducao] = useState({ modelo: "", quantidade: 0 });
   const [resultado, setResultado] = useState(null);
   const [fichaAberta, setFichaAberta] = useState(null); 
-
+  const [modeloEmEdicao, setModeloEmEdicao] = useState(null);
   const toggleFicha = (id) => {
     setFichaAberta(fichaAberta === id ? null : id);
   };
@@ -110,52 +111,37 @@ function Engenharia() {
   const calcularOtimizacao = () => {
     if (!producao.modelo || producao.quantidade <= 0) return;
 
-    const modeloSelecionado = modelosIniciais.find(m => m.id === parseInt(producao.modelo));
+    // Busca no state 'modelos', não na constante inicial
+    const modeloSelecionado = modelos.find(m => m.id === parseInt(producao.modelo));
     const qtdProduzir = parseInt(producao.quantidade);
 
-    // 1. Calcular Materiais Totais
     const listaMateriaisCalculada = modeloSelecionado.materiais.map(mat => {
       let total = mat.consumo * qtdProduzir;
       let sobra = null;
       
-      // Lógica específica para Chapas de Espuma (Cálculo de Sobras)
       if (mat.unidade === 'chapa') {
         const chapasInteiras = Math.ceil(total);
         const resto = chapasInteiras - total;
-        total = chapasInteiras; // Arredonda pra cima pq não compra meia chapa
+        total = chapasInteiras; 
         if (resto > 0.05) sobra = `${(resto * 100).toFixed(1)}% da última chapa`;
       } else {
-        total = total.toFixed(2); // Arredonda decimais para outros materiais
+        total = total.toFixed(2);
       }
 
       return { ...mat, totalCalculado: total, sobraEstimada: sobra };
     });
 
-    // 2. Sugestão de Reaproveitamento (Focada em Espuma)
     let sugestaoSobra = [];
     const materialEspumaPrincipal = listaMateriaisCalculada.find(m => m.tipo.includes("Espuma") && m.sobraEstimada);
     
     if (materialEspumaPrincipal) {
-      // Pega a porcentagem de sobra (ex: "40.0%...")
       const pctSobra = parseFloat(materialEspumaPrincipal.sobraEstimada); 
-      
-      // Verifica se dá pra fazer Escadinha ou Almofada
       if (pctSobra > 20) {
-         // Exemplo: Escadinha gasta 0.2 chapa (20%). Se sobrar 40%, dá pra fazer 2.
          const qtdEscadinhas = Math.floor(pctSobra / 20); 
          if (qtdEscadinhas > 0) {
-           sugestaoSobra.push({
-             produto: "Escadinha Pet",
-             qtd: qtdEscadinhas,
-             obs: "Aproveita retalhos de espuma D23/D28 se houver compatibilidade."
-           });
+           sugestaoSobra.push({ produto: "Escadinha Pet", qtd: qtdEscadinhas, obs: "Aproveita retalhos de espuma." });
          }
-    
-         sugestaoSobra.push({
-             produto: "Enchimento de Almofada",
-             qtd: Math.floor(pctSobra / 5),
-             obs: "Triturar retalhos para enchimento (Flocos)."
-         });
+         sugestaoSobra.push({ produto: "Enchimento de Almofada", qtd: Math.floor(pctSobra / 5), obs: "Triturar para flocos." });
       }
     }
 
@@ -167,8 +153,163 @@ function Engenharia() {
     });
   };
 
+  // --- LÓGICA DE EDIÇÃO ---
+  const abrirModalEdicao = (modelo) => {
+    // Clona o objeto para não editar o state diretamente antes de salvar
+    setModeloEmEdicao(JSON.parse(JSON.stringify(modelo)));
+  };
+
+  const fecharModalEdicao = () => {
+    setModeloEmEdicao(null);
+  };
+
+  const atualizarCampoMaterial = (index, campo, valor) => {
+    const novosMateriais = [...modeloEmEdicao.materiais];
+    novosMateriais[index][campo] = valor;
+    setModeloEmEdicao({ ...modeloEmEdicao, materiais: novosMateriais });
+  };
+
+  const removerMaterial = (index) => {
+    const novosMateriais = modeloEmEdicao.materiais.filter((_, i) => i !== index);
+    setModeloEmEdicao({ ...modeloEmEdicao, materiais: novosMateriais });
+  };
+
+  const adicionarMaterial = () => {
+    const novo = { tipo: "Novo Material", consumo: 1, unidade: "un", medidas: "-" };
+    setModeloEmEdicao({ ...modeloEmEdicao, materiais: [...modeloEmEdicao.materiais, novo] });
+  };
+
+  const salvarEdicao = () => {
+    const novaListaModelos = modelos.map(m => 
+      m.id === modeloEmEdicao.id ? modeloEmEdicao : m
+    );
+    setModelos(novaListaModelos);
+    setModeloEmEdicao(null);
+    if (resultado && resultado.modelo === modeloEmEdicao.nome) {
+      setResultado(null);
+    }
+  };
+
   return (
-    <div className="animate-fade-in space-y-6 pb-10">
+    <div className="animate-fade-in space-y-6 pb-10 relative">
+      {modeloEmEdicao && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
+            
+            {/* Header Modal */}
+            <div className="bg-[#064e3b] p-4 text-white flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <Edit size={18} className="text-[#b49157]" />
+                <h3 className="font-black uppercase tracking-widest text-sm">Editando: {modeloEmEdicao.nome}</h3>
+              </div>
+              <button onClick={fecharModalEdicao} className="hover:bg-white/20 p-1 rounded transition-colors"><X size={20} /></button>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1 bg-slate-50">
+              
+              <div className="mb-6 grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] font-black uppercase text-slate-500 mb-1 block">Nome do Produto</label>
+                  <input 
+                    type="text" 
+                    value={modeloEmEdicao.nome}
+                    onChange={(e) => setModeloEmEdicao({...modeloEmEdicao, nome: e.target.value})}
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-700"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-black uppercase text-slate-500 mb-1 block">Dimensões Gerais</label>
+                  <input 
+                    type="text" 
+                    value={modeloEmEdicao.dimensoes}
+                    onChange={(e) => setModeloEmEdicao({...modeloEmEdicao, dimensoes: e.target.value})}
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-700"
+                  />
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                <table className="w-full text-left">
+                  <thead className="bg-slate-100 text-[10px] font-black uppercase text-slate-500">
+                    <tr>
+                      <th className="p-3">Material / Tipo</th>
+                      <th className="p-3 w-24">Consumo</th>
+                      <th className="p-3 w-24">Unidade</th>
+                      <th className="p-3">Medidas / Detalhes</th>
+                      <th className="p-3 w-10"></th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {modeloEmEdicao.materiais.map((mat, idx) => (
+                      <tr key={idx} className="hover:bg-slate-50">
+                        <td className="p-2">
+                          <input 
+                            value={mat.tipo} 
+                            onChange={(e) => atualizarCampoMaterial(idx, 'tipo', e.target.value)}
+                            className="w-full p-1 border border-transparent hover:border-slate-300 rounded text-xs font-bold text-[#064e3b]"
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input 
+                            type="number"
+                            step="0.1"
+                            value={mat.consumo} 
+                            onChange={(e) => atualizarCampoMaterial(idx, 'consumo', e.target.value)}
+                            className="w-full p-1 border border-transparent hover:border-slate-300 rounded text-xs text-center font-mono"
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input 
+                            value={mat.unidade} 
+                            onChange={(e) => atualizarCampoMaterial(idx, 'unidade', e.target.value)}
+                            className="w-full p-1 border border-transparent hover:border-slate-300 rounded text-xs text-center text-slate-500"
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input 
+                            value={mat.medidas || ''} 
+                            onChange={(e) => atualizarCampoMaterial(idx, 'medidas', e.target.value)}
+                            className="w-full p-1 border border-transparent hover:border-slate-300 rounded text-xs text-slate-600"
+                            placeholder="-"
+                          />
+                        </td>
+                        <td className="p-2 text-center">
+                          <button onClick={() => removerMaterial(idx)} className="text-rose-400 hover:text-rose-600 p-1">
+                            <Trash size={14} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <button 
+                  onClick={adicionarMaterial}
+                  className="w-full py-3 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-500 uppercase flex items-center justify-center gap-2 transition-colors"
+                >
+                  <Plus size={14} /> Adicionar Novo Insumo
+                </button>
+              </div>
+
+            </div>
+
+            <div className="p-4 border-t border-slate-200 bg-white flex justify-end gap-3">
+              <button 
+                onClick={fecharModalEdicao}
+                className="px-6 py-2 border border-slate-300 text-slate-600 font-bold uppercase text-xs rounded-lg hover:bg-slate-50"
+              >
+                Cancelar
+              </button>
+              <button 
+                onClick={salvarEdicao}
+                className="px-6 py-2 bg-[#064e3b] text-white font-bold uppercase text-xs rounded-lg hover:bg-[#08634b] shadow-lg flex items-center gap-2"
+              >
+                <Save size={14} /> Salvar Alterações
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-slate-200 pb-4">
         <div>
           <h1 className="text-2xl font-black text-[#064e3b] uppercase tracking-tighter flex items-center gap-2">
@@ -195,7 +336,7 @@ function Engenharia() {
                 onChange={(e) => setProducao({...producao, modelo: e.target.value})}
               >
                 <option value="">Selecione um Modelo...</option>
-                {modelosIniciais.map(m => (
+                {modelos.map(m => (
                   <option key={m.id} value={m.id}>{m.nome}</option>
                 ))}
               </select>
@@ -219,6 +360,7 @@ function Engenharia() {
             </button>
           </div>
         </div>
+
         <div className="space-y-6">
           {resultado ? (
             <>
@@ -293,7 +435,7 @@ function Engenharia() {
         </h3>
         
         <div className="grid grid-cols-1 gap-4">
-          {modelosIniciais.map((item) => (
+          {modelos.map((item) => (
             <div key={item.id} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden transition-all">
               <div 
                 className="p-4 flex justify-between items-center cursor-pointer hover:bg-slate-50"
@@ -328,8 +470,11 @@ function Engenharia() {
                     <button className="px-4 py-2 bg-slate-200 text-slate-600 text-[10px] font-black uppercase rounded hover:bg-slate-300 transition-colors">
                       Imprimir Ficha
                     </button>
-                    <button className="px-4 py-2 bg-[#b49157] text-white text-[10px] font-black uppercase rounded hover:bg-[#9a7b48] transition-colors">
-                      Editar Composição
+                    <button 
+                      onClick={() => abrirModalEdicao(item)}
+                      className="px-4 py-2 bg-[#b49157] text-white text-[10px] font-black uppercase rounded hover:bg-[#9a7b48] transition-colors flex items-center gap-2"
+                    >
+                      <Edit size={12} /> Editar Composição
                     </button>
                   </div>
                 </div>
