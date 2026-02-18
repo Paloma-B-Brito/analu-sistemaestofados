@@ -11,10 +11,10 @@ import Login from "./pages/Login";
 import Header from "./components/Header";
 
 // --- 2. PÁGINAS GERAIS (RAIZ DE PAGES) ---
-import Dashboard from "./pages/Dashboard";        
-import KPIs from "./pages/KPIs";                  
-import Relatorios from './pages/Relatorios';      
-import Funcionarios from "./pages/Funcionários";  
+import Dashboard from "./pages/Dashboard";         
+import KPIs from "./pages/KPIs";                   
+import Relatorios from './pages/Relatorios';       
+import Funcionarios from "./pages/Funcionários";   
 
 // --- 3. MÓDULO FÁBRICA (PASTA /fabrica) ---
 import DashboardFabrica from './pages/fabrica/DashboardFabrica';
@@ -22,6 +22,7 @@ import EstoqueFabrica from "./pages/fabrica/EstoqueFabrica";
 import GestaoInsumos from "./pages/fabrica/GestaoInsumos";
 import Qualidade from './pages/fabrica/Qualidade';   
 import Manutencao from './pages/fabrica/Manutencao'; 
+import Engenharia from './pages/fabrica/Engenharia'; // NOVO MÓDULO
 
 // --- 4. MÓDULO LOJA (PASTA /loja) ---
 import DashboardLoja from './pages/loja/DashboardLoja';
@@ -100,6 +101,7 @@ function App() {
     if (role === "FABRICA") {
       switch (pagina) {
         case "DashboardFabrica": return <DashboardFabrica />; 
+        case "Engenharia": return <Engenharia />; // NOVO
         case "Estoque": return <EstoqueFabrica userRole={role} />;
         case "Suprimentos": return <GestaoInsumos />;
         case "Qualidade": return <Qualidade />;
@@ -108,7 +110,6 @@ function App() {
       }
     }
 
-    // --- 3. VISÃO DO CEO/ADMIN (ACESSO TOTAL) ---
     switch (pagina) {
       
       // === MÓDULO DASHBOARD GERAL ===
@@ -118,6 +119,7 @@ function App() {
 
       // === MÓDULO FÁBRICA ===
       case "DashboardFabrica": return <DashboardFabrica />;
+      case "Engenharia": return <Engenharia />; // NOVO
       case "Estoque": return <EstoqueFabrica userRole={role} />;
       case "Suprimentos": return <GestaoInsumos />;
       case "Qualidade": return <Qualidade />;
@@ -154,8 +156,6 @@ function App() {
         userRole={role} 
         onLogout={handleLogout}
       />
-
-      {/* Container Principal Dinâmico */}
       <main className="flex-1 w-full max-w-[1920px] mx-auto p-4 md:p-6 animate-fade-in relative">
         {renderizarPagina()}
       </main>
