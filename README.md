@@ -62,4 +62,4 @@ REACT_APP_SYSTEM_VERSION=3.0.0
 
 Este software é de uso restrito da Analu Estofados. Desenvolvido sob os protocolos de engenharia de:
 
-© 2026 Rickman Brown • Software Engineering
+© 2026 Minister Noiret • Software Engineering
