@@ -1,28 +1,49 @@
-# Dependências (Nunca envie isso!)
-node_modules
+# ==========================================
+node_modules/
 .pnp
 .pnp.js
 
-# Pastas de Build (Produção)
-build
-dist
+# ==========================================
+build/
+dist/
+target/
+*.class
 
-# Arquivos de Segurança e Ambiente (Chaves de API, senhas)
+# ==========================================
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+*.properties.local
 
-# Logs de erro
+# ==========================================
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# ==========================================
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Arquivos de Sistema Operacional (Lixo do Windows/Mac)
+*.log
 .DS_Store
 Thumbs.db
 
-# Configurações de Editor (Opcional, mas bom ter)
-.vscode
-.idea
+# ==========================================
+.vscode/
+.idea/
+.settings/
+.project
+.classpath
+.springBeans
+*.iws
+*.iml
+*.ipr
